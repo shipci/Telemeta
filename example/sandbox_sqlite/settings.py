@@ -84,6 +84,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'pagination.middleware.PaginationMiddleware',
+    'django.contrib.auth.backends.ModelBackend',
+    'socialregistration.contrib.facebook.auth.FacebookAuth',
 )
 
 ROOT_URLCONF = 'sandbox_sqlite.urls'
@@ -105,6 +108,10 @@ INSTALLED_APPS = (
     'telemeta',
     'jsonrpc',
     'south',
+    'postman',
+    'pagination',
+    'socialregistration',
+    'socialregistration.contrib.facebook',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -129,3 +136,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
+
+POSTMAN_AUTO_MODERATE_AS=True
+
+FACEBOOK_APP_ID = '348560078520326'
+FACEBOOK_SECRET_KEY = 'f6204a5468be878bfce8f0007455c022'
+FACEBOOK_REQUEST_PERMISSIONS = ''
