@@ -61,8 +61,14 @@
 <a href="{% url telemeta-logout %}">{% trans "Sign out" %}
 <img src="{% url telemeta-images "logout.png" %}" alt="logout" style="vertical-align:middle" /></a>
 {% else %}
+<div style="float: left;">
 <a href="{% url telemeta-flatpage "help" %}">{% trans "Help" %}</a> |
 <a href="{% url telemeta-login %}?next={{ request.path|urlencode }}">{% trans "Sign in" %}</a>
+</div>
+<div style="float: right;;">
+{% load facebook %}
+{% facebook_button %}
+</div>
 {% endif %}
 </div>
 
