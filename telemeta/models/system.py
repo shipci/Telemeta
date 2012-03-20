@@ -41,6 +41,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 import django.db.models as models
 from django.forms import ModelForm
+from django.contrib.sessions.models import Session
 
 
 class Revision(ModelCore):
@@ -89,6 +90,7 @@ class UserProfile(models.Model):
     address         = TextField(_('Address'))
     telephone       = CharField(_('Telephone'))
     expiration_date = DateField(_('Expiration_date'))
+    last_session_key = CharField(blank=True, null=True, max_length=40)
 
     class Meta(MetaCore):
         db_table = 'profiles'

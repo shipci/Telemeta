@@ -6,6 +6,10 @@ from telemeta.models.language import *
 from telemeta.models.system import *
 from django.contrib import admin
 from django.forms import CheckboxSelectMultiple
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
+
+admin.site.unregister(User)
 
 class MediaFondsAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
@@ -76,6 +80,12 @@ class RevisionAdmin(admin.ModelAdmin):
 class FormatAdmin(admin.ModelAdmin):
     search_fields = ['code', 'vendor']
 
+class UserProfileInline(admin.StackedInline):
+	model = UserProfile
+
+class UserProfileAdmin(UserAdmin):
+	inlines = [UserProfileInline]
+
 admin.site.register(MediaFonds, MediaFondsAdmin)
 admin.site.register(MediaCorpus, MediaCorpusAdmin)
 admin.site.register(MediaCollection, MediaCollectionAdmin)
@@ -100,3 +110,5 @@ admin.site.register(Language, LanguageAdmin)
 admin.site.register(Revision, RevisionAdmin)
 
 admin.site.register(Format, FormatAdmin)
+
+admin.site.register(User, UserProfileAdmin)
