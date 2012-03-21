@@ -14,14 +14,13 @@ admin.site.unregister(User)
 class MediaFondsAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
+    filter_horizontal = ['children']
 
 class MediaCorpusAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
-    formfield_overrides = {
-        models.ManyToManyField: {'widget': CheckboxSelectMultiple}
-        }
-
+    filter_horizontal = ['children']
+    
 class MediaCollectionAdmin(admin.ModelAdmin):
     search_fields = ['title', 'code']
     ordering = ['code']
