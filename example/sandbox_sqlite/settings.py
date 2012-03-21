@@ -112,6 +112,7 @@ INSTALLED_APPS = (
     'pagination',
     'socialregistration',
     'socialregistration.contrib.facebook',
+    'sorl.thumbnail',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -124,7 +125,7 @@ TELEMETA_SUBJECTS = ('test', 'telemeta', 'sandbox')
 TELEMETA_DESCRIPTION = "Telemeta TEST sandbox"
 TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RRGObu5PDoiBImgalVnnLU2yN4RMA'
 TELEMETA_CACHE_DIR = MEDIA_ROOT + 'cache'
-TELEMETA_EXPORT_CACHE_DIR = TELEMETA_CACHE_DIR + "/export"
+TELEMETA_EXPORT_CACHE_DIR = MEDIA_ROOT + 'export'
 TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "/data"
 
 TELEMETA_DOWNLOAD_ENABLED = True
