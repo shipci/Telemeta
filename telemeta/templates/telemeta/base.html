@@ -20,6 +20,8 @@
 <![endif]-->
 {% endblock %}
 
+{% block extra_stylesheets %}{% endblock %}
+
 {% block javascript %}
 <script src="{% url django.views.i18n.javascript_catalog %}" type="text/javascript"></script>
 <!--<script src="{% url telemeta-js "jquery-1.6.min.js" %}" type="text/javascript"></script>-->
@@ -90,11 +92,6 @@
   <li><a href="#desk#" class="blue">{% trans "Desk" %}</a></span>
    <ul>
     <li><a href="{% url telemeta-desk-lists %}">{% trans "Lists" %}</a></li>
-    {% if 'postman'|installed %}
-    {% load postman_tags %}
-    {% postman_unread as unread_count %}
-    <li><a href="{% url postman_inbox %}">{% trans "Messages" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a></li>
-    {% endif %}
     <li><a href="{% url telemeta-desk-profile user.username %}">{% trans "Profile" %}</a></li>
     <li><a href="{% url telemeta-desk-home %}">{% trans "Home" %}</a></li>
    </ul>
@@ -102,6 +99,8 @@
  {% else %}
   <li><a href="{% url telemeta-home %}" class="blue">{% trans "Home" %}</a></li>
  {% endif %}
+
+ {% block archives %}
  <li><a href="#archives#" class="green">{% trans "Archives" %}</a>
   <ul>
     <li><a href="{% url telemeta-fonds %}">{% trans "Fonds" %}</a></li>
@@ -111,7 +110,12 @@
   </ul>
   <div class="clear"></div>
  </li>
+ {% endblock archives %}
+ 
+ {% block geonav %}
  <li><a href="{% url telemeta-geo-continents %}" class="yellow">{% trans "Geo Navigator" %}</a></li>
+ {% endblock geonav %}
+
  <li><a href="{% url telemeta-search-criteria %}" class="orange">{% trans "Advanced search" %}</a></li>
  {% if user.is_authenticated %}
  <li><a href="{% url telemeta-users %}" class="red">{% trans "Users" %}</a></li>
@@ -134,15 +138,16 @@
 </div>
 {% endblock header %}
 
+{% block postman_menu %}
+{% endblock postman_menu %}
+
 <div id="content">
     <table id="content_header"><tr>
             <td class="leftcol"><h1>{% block title %}{% endblock %}</h1></td>
             <td class="rightcol">{% block title_buttons %}{% endblock %}</td>
     </tr></table>
-    {% block content %}
-    {% endblock %}
+{% block content %}{% endblock %}
 <div class="nett"></div>
-
 {% block delete %}{% endblock %}
 </div>
 
