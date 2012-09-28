@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-26 13:33+0200\n"
+"POT-Creation-Date: 2012-09-28 17:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Olivier Guilyardi <olivier samalyse com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -470,7 +470,7 @@ msgstr "date d'enregistrement (jusqu'à)"
 
 #: models/media.py:323
 msgid "scientist"
-msgstr "reponsable scientifique"
+msgstr "responsable scientifique"
 
 #: models/media.py:325
 msgid "summary"
@@ -1380,11 +1380,11 @@ msgid_plural "%(counter)s items "
 msgstr[0] "1 item"
 msgstr[1] "%(counter)s items "
 
-#: templates/telemeta/home.html:14 templates/telemeta/home.html.py:60
+#: templates/telemeta/home.html:14 templates/telemeta/home.html.py:62
 msgid "Musical selection"
 msgstr "Sélection musicale"
 
-#: templates/telemeta/home.html:27
+#: templates/telemeta/home.html:28
 msgid "Open the geographic navigator"
 msgstr "Accéder au navigateur géographique"
 
@@ -1920,12 +1920,12 @@ msgstr "Enfants"
 msgid "pattern"
 msgstr "mots clés"
 
-#: views/collection.py:49 views/home.py:87 views/item.py:96 views/item.py:477
+#: views/collection.py:49 views/home.py:87 views/item.py:96 views/item.py:476
 #: views/profile.py:68
 msgid "Access not allowed"
 msgstr "Accès non autorisé"
 
-#: views/collection.py:51 views/home.py:89 views/item.py:98 views/item.py:479
+#: views/collection.py:51 views/home.py:89 views/item.py:98 views/item.py:478
 #: views/profile.py:70
 msgid ""
 "Please login or contact the website administator to get a private access."

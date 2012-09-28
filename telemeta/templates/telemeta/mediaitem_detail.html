@@ -242,7 +242,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
     <div class="extraInfos">
         {% block legal_notices %}
-        <div>
+        <div class="folded">
             <h4><a href="#">{% trans "Legal notices" %}</a></h4>
             <dl class="listing">
              <dt>{% trans "Organization" %}</dt>
@@ -261,7 +261,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
     <div class="extraInfos">
     {% block archive_data %}
-        <div>
+        <div class="folded">
             <h4><a href="#">{% trans "Archiving data" %}</a></h4>
             <dl class="listing">
                 {% dl_field item "code" %}
@@ -287,7 +287,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
     <div class="extraInfos">
         {% block technical_data %}
-        <div>
+        <div class="folded">
             <h4><a href="#">{% trans "Technical data" %}</a></h4>
             <div>
                 <dl class="listing">
