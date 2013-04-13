@@ -249,7 +249,7 @@ The simplest case is to have telemeta running at public root. To do so, add this
 
 You should also bring the django admin::
 
-    (r'^admin/django/', include(admin.site.urls)),
+    (r'^admin/', include(admin.site.urls)),
 
 Please also uncomment::
 
