@@ -50,15 +50,7 @@ def language_code(request=None):
     return code.lower()
 
 def project_dir():
-    import settings as settings_mod
-    if '__init__.py' in settings_mod.__file__:
-        p = os.path.dirname(settings_mod.__file__)
-    else:
-        p = settings_mod.__file__
-    project_directory, settings_filename = os.path.split(p)
-    if project_directory == os.curdir or not project_directory:
-        project_directory = os.getcwd()
-
+    project_directory = os.getcwd()
     return project_directory
 
 def resolve_page_file(root, relative_path, ignore_slash_issue=False):
