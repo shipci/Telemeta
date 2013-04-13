@@ -414,23 +414,25 @@ class ItemView(object):
         return mime_type
 
     def item_analyze_xml(self, request, public_id):
-        analyzers = self.item_get_analyzers(public_id)
-        analyzer_data = self.cache_data.get_analyzer_xml(analyzers)
+        analyzers_data = self.item_get_analyzers_results(public_id)
+        serialized = self.cache_data.get_analyzer_xml(analyzers_data)
         mime_type = 'text/xml'
-        response = HttpResponse(analyzer_data, mimetype=mime_type)
+        response = HttpResponse(serialized, mimetype=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
         return response
 
     def item_analyze_json(self, request, public_id):
-        analyzers = self.item_get_analyzers(public_id)
-        analyzer_data = self.cache_data.get_analyzer_json(analyzers)
+        analyzers_data = self.item_get_analyzers_results(public_id)
+        serialized = self.cache_data.get_analyzer_json(analyzers_data)
         mime_type = 'text/plain'
-        response = HttpResponse(analyzer_data, mimetype=mime_type)
+        response = HttpResponse(serialized, mimetype=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.txt'
         return response
 
-    def item_get_analyzers(self, public_id):
+    def item_get_analyzers_results(self, public_id):
         item = MediaItem.objects.get(public_id=public_id)
+        analyses = MediaItemAnalysis.objects.filter(item=item)
+        if len(analyses) == 0: self.item_analyze(item)
         analyses = MediaItemAnalysis.objects.filter(item=item)
         analyzers = []
         for analysis in analyses:
