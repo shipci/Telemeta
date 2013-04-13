@@ -131,3 +131,10 @@ class TelemetaCache(object):
             node.setAttribute('value', str(value))
             root.appendChild(node)
         return xml.dom.minidom.Document.toprettyxml(doc)
+
+    def get_analyzer_json(self, data_list):
+        import simplejson as json
+        data_dict = {}
+        for data in data_list:
+            data_dict[data['id']] = {'name': data['name'], 'unit': data['unit'], 'value': data['value']}
+        return json.dumps(data_dict) + '\n'
