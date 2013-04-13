@@ -52,12 +52,13 @@ class Command(BaseCommand):
         for url in self.urls:
             code = url.split('/')[-1]
             code = code.replace(' ', '_')
+            title = os.path.splitext(code)[0].replace('_', ' ')
             items = MediaItem.objects.filter(code=code)
             if not items:
-                item = MediaItem(collection=collection, code=code, title=code)
+                item = MediaItem(collection=collection, code=code, title=title)
                 item.save()
             else:
-                #print 'cleanup'
+                print 'cleaning up', code
                 item = items[0]
                 self.cache_data.delete_item_data(code)
                 self.cache_export.delete_item_data(code)
@@ -71,6 +72,7 @@ class Command(BaseCommand):
             print 'fetching: ' + url
             file = urllib.urlopen(url)
             file_content = ContentFile(file.read())
+            item.title = title
             item.file.save(code, file_content)
             item.public_access = 'full'
             item.save()
