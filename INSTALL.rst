@@ -200,6 +200,7 @@ Add the following variables::
     TELEMETA_ORGANIZATION = "foo.org"                 # name of the organization which hosts this installation
     TELEMETA_SUBJECTS = ""                            # tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
     TELEMETA_DESCRIPTION = 'foo sound database'       # the description of the site
+    TELEMETA_MEDIA_DIR = MEDIA_ROOT + 'foo_media/'    # the path where media files will be imported
     TELEMETA_CACHE_DIR = MEDIA_ROOT + 'foo_cache/'    # absolute path to the cache directory that you just created
     TELEMETA_GMAP_KEY = ''                            # your Google Map API key
     TELEMETA_DOWNLOAD_ENABLED = True                  # True to enable raw audio data download
