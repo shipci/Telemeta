@@ -424,9 +424,9 @@ class ItemView(object):
     def item_analyze_json(self, request, public_id):
         analyzers_data = self.item_get_analyzers_results(public_id)
         serialized = self.cache_data.get_analyzer_json(analyzers_data)
-        mime_type = 'text/plain'
+        mime_type = 'application/json.'
         response = HttpResponse(serialized, mimetype=mime_type)
-        response['Content-Disposition'] = 'attachment; filename='+public_id+'.txt'
+        response['Content-Disposition'] = 'attachment; filename='+public_id+'.json'
         return response
 
     def item_get_analyzers_results(self, public_id):
