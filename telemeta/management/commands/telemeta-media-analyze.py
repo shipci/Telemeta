@@ -29,11 +29,15 @@ class Command(BaseCommand):
         import time
         force = options['force']
 
-        for collection in MediaCollection.objects.filter():
-            for item in MediaItem.objects.filter(collection=collection):
+        collections = MediaCollection.objects.all()
+        for collection in collections:
+            items = MediaItem.objects.filter(collection=collection)
+            for item in items:
                 print 'analyzing', collection, '|', item,
                 start = time.time()
                 item_view = ItemView()
                 item_view.item_analyze(item, force = force)
                 stop = time.time()
                 print "(%.2fs)" % (stop - start)
+            print 'done analyzing %d items in collection %s' % (len(items), collection)
+        print 'done analyzing %d collections' % len(collections)
