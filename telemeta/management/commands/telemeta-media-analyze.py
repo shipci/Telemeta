@@ -13,10 +13,9 @@ class Command(BaseCommand):
     help = "Download and import a media item"
     option_list = BaseCommand.option_list + (
             make_option('--all',
-                action='store',
-                dest='code',
-                default='default',
-                metavar = '<code>',
+                action='store_true',
+                dest='force',
+                default=False,
                 help='recompute analysis on files that have already been analyzed'),
             )
 
@@ -27,11 +26,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        force = options['force']
+
         for collection in MediaCollection.objects.filter():
             for item in MediaItem.objects.filter(collection=collection):
                 print 'analyzing', collection, '|', item,
                 start = time.time()
                 item_view = ItemView()
-                item_view.item_analyze(item)
+                item_view.item_analyze(item, force = force)
                 stop = time.time()
                 print "(%.2fs)" % (stop - start)
