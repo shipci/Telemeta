@@ -330,6 +330,9 @@ class ItemView(object):
 
     def item_analyze(self, item, force = False):
         analyses = MediaItemAnalysis.objects.filter(item=item)
+        if force == True:
+            # force requested, remove all existing analyses
+            for analyse in analyses: analyse.delete()
         mime_type = ''
 
         if analyses and force == False:
