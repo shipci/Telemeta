@@ -405,11 +405,19 @@ class ItemView(object):
                 analysis.save()
 
                 for analyzer in analyzers_sub:
-                    value = analyzer.result()
-                    analysis = MediaItemAnalysis(item=item, name=analyzer.name(),
-                                                 analyzer_id=analyzer.id(),
-                                                 unit=analyzer.unit(), value=str(value))
-                    analysis.save()
+                    if hasattr(analyzer, 'results'):
+                        for result in analyzer.results():
+                            analysis = MediaItemAnalysis(item=item, name=result.name,
+                                                             analyzer_id=result.id,
+                                                             unit=result.unit, value=str(result.value))
+                            analysis.save()
+                    else:
+                        value = analyzer.result()
+                        analysis = MediaItemAnalysis(item=item, name=analyzer.name(),
+                                analyzer_id=analyzer.id(),
+                                unit=analyzer.unit(), value=str(value))
+                        analysis.save()
+
 
 #                FIXME: parse tags on first load
 #                tags = decoder.tags
