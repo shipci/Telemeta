@@ -110,12 +110,12 @@ class TelemetaCache(object):
 
     def write_analyzer_xml(self, data_list, file):
         path = self.dir + os.sep + file
-        data = self.get_analyzer_xml(data_list)
+        data = self.data_to_xml(data_list)
         f = open(path, "w")
         f.write(data)
         f.close()
 
-    def get_analyzer_xml(self, data_list):
+    def data_to_xml(self, data_list):
         doc = xml.dom.minidom.Document()
         root = doc.createElement('telemeta')
         doc.appendChild(root)
@@ -132,9 +132,10 @@ class TelemetaCache(object):
             root.appendChild(node)
         return xml.dom.minidom.Document.toprettyxml(doc)
 
-    def get_analyzer_json(self, data_list):
+    def data_to_json(self, data_list):
         import simplejson as json
-        data_dict = {}
-        for data in data_list:
-            data_dict[data['id']] = {'name': data['name'], 'unit': data['unit'], 'value': data['value']}
-        return json.dumps(data_dict) + '\n'
+        return json.dumps(data_list)
+
+    def data_to_yaml(self, data_list):
+        import yaml
+        return yaml.dump_all(data_list, default_flow_style=False)

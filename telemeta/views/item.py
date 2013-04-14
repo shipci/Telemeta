@@ -408,8 +408,8 @@ class ItemView(object):
                     if hasattr(analyzer, 'results'):
                         for result in analyzer.results():
                             analysis = MediaItemAnalysis(item=item, name=result.name,
-                                                             analyzer_id=result.id,
-                                                             unit=result.unit, value=str(result.value))
+                                    analyzer_id=result.id,
+                                    unit=result.unit, value=str(result.value))
                             analysis.save()
                     else:
                         value = analyzer.result()
@@ -427,7 +427,7 @@ class ItemView(object):
     def item_analyze_xml(self, request, public_id):
         analyzers_data = self.item_get_analyzers_results(public_id)
         if not analyzers_data: raise Http404
-        serialized = self.cache_data.get_analyzer_xml(analyzers_data)
+        serialized = self.cache_data.data_to_xml(analyzers_data)
         mime_type = 'text/xml'
         response = HttpResponse(serialized, mimetype=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
@@ -436,10 +436,19 @@ class ItemView(object):
     def item_analyze_json(self, request, public_id):
         analyzers_data = self.item_get_analyzers_results(public_id)
         if not analyzers_data: raise Http404
-        serialized = self.cache_data.get_analyzer_json(analyzers_data)
+        serialized = self.cache_data.data_to_json(analyzers_data)
         mime_type = 'application/json'
         response = HttpResponse(serialized, mimetype=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.json'
+        return response
+
+    def item_analyze_yaml(self, request, public_id):
+        analyzers_data = self.item_get_analyzers_results(public_id)
+        if not analyzers_data: raise Http404
+        serialized = self.cache_data.data_to_yaml(analyzers_data)
+        mime_type = 'text/plain'
+        response = HttpResponse(serialized, mimetype=mime_type)
+        response['Content-Disposition'] = 'attachment; filename='+public_id+'.yaml'
         return response
 
     def item_get_analyzers_results(self, public_id):
