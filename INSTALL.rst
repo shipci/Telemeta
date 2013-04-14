@@ -274,8 +274,14 @@ If you want tu use the data schema migration system (South needed, see previous 
     ./manage.py migrate telemeta
     ./manage.py collectstatic
 
+Import some data
+----------------
 
-Start the project
+Import some media files to the database::
+
+    ./manage.py telemeta-import-media --collection-title Tonas --collection-code tonas files_to_import/*/*.wav
+
+Start the web server
 --------------------
 
 We are ready to start the telemeta server::
@@ -290,9 +296,8 @@ To get it on your network interface::
 
     python manage.py runserver 192.168.0.10:9000
 
-
 Test it
------------
+-------
 
 Go to this URL with your browser::
 
@@ -310,7 +315,6 @@ or::
 Configure the site domain name in admin > general admin > sites
 
 Test it and enjoy it !
-
 
 --------------------------
 Template customization
