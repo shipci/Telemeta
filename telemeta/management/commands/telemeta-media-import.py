@@ -7,6 +7,16 @@ from telemeta.util.unaccent import unaccent
 from telemeta.cache import TelemetaCache
 import urllib
 
+try:
+    from django.utils.text import slugify
+except ImportError:
+    def slugify(string):
+        killed_chars = re.sub('[\(\),]', '', string)
+        return re.sub(' ', '_', killed_chars)
+
+def beautify(string):
+    return os.path.splitext(string)[0].replace('_',' ')
+
 class Command(BaseCommand):
     args = "<media_file1 [media_file2 ...]>"
     help = "Download and import a media item"
@@ -50,9 +60,9 @@ class Command(BaseCommand):
             collection = collections[0]
 
         for url in self.urls:
-            code = url.split('/')[-1]
-            code = code.replace(' ', '_')
-            title = os.path.splitext(code)[0].replace('_', ' ')
+            basename = os.path.basename(url)
+            code = slugify(basename)
+            title = beautify(basename)
             items = MediaItem.objects.filter(code=code)
             if not items:
                 item = MediaItem(collection=collection, code=code, title=title)
@@ -77,3 +87,5 @@ class Command(BaseCommand):
             item.public_access = 'full'
             item.save()
             print 'item created: ', collection, code
+
+        print 'done importing', len(self.urls), 'items'
