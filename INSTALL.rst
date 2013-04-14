@@ -316,6 +316,13 @@ Configure the site domain name in admin > general admin > sites
 
 Test it and enjoy it !
 
+Analyze all the files
+---------------------
+
+To analyze all the files in your collections::
+
+    ./manage telemeta-media-analyze
+
 --------------------------
 Template customization
 --------------------------
