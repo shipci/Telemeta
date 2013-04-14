@@ -37,6 +37,7 @@
 import mimetypes
 from telemeta.views.core import *
 
+from timeside.analyzer.core import AnalyzerResultContainer
 
 class ItemView(object):
     """Provide Item web UI methods"""
@@ -427,7 +428,7 @@ class ItemView(object):
     def item_analyze_xml(self, request, public_id):
         analyzers_data = self.item_get_analyzers_results(public_id)
         if not analyzers_data: raise Http404
-        serialized = self.cache_data.data_to_xml(analyzers_data)
+        serialized = AnalyzerResultContainer(analyzers_data).to_xml()
         mime_type = 'text/xml'
         response = HttpResponse(serialized, mimetype=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
@@ -436,7 +437,7 @@ class ItemView(object):
     def item_analyze_json(self, request, public_id):
         analyzers_data = self.item_get_analyzers_results(public_id)
         if not analyzers_data: raise Http404
-        serialized = self.cache_data.data_to_json(analyzers_data)
+        serialized = AnalyzerResultContainer(analyzers_data).to_json()
         mime_type = 'application/json'
         response = HttpResponse(serialized, mimetype=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.json'
@@ -445,7 +446,8 @@ class ItemView(object):
     def item_analyze_yaml(self, request, public_id):
         analyzers_data = self.item_get_analyzers_results(public_id)
         if not analyzers_data: raise Http404
-        serialized = self.cache_data.data_to_yaml(analyzers_data)
+        container = AnalyzerResultContainer()
+        serialized = AnalyzerResultContainer(analyzers_data).to_json()
         mime_type = 'text/plain'
         response = HttpResponse(serialized, mimetype=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.yaml'

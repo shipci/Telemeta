@@ -109,33 +109,9 @@ class TelemetaCache(object):
         return list
 
     def write_analyzer_xml(self, data_list, file):
+        from timeside.analyzer.core import AnalyzerResultContainer
         path = self.dir + os.sep + file
-        data = self.data_to_xml(data_list)
+        data = AnalyzerResultContainer(data_list).to_xml()
         f = open(path, "w")
         f.write(data)
         f.close()
-
-    def data_to_xml(self, data_list):
-        doc = xml.dom.minidom.Document()
-        root = doc.createElement('telemeta')
-        doc.appendChild(root)
-        for data in data_list:
-            name = data['name']
-            id = data['id']
-            unit = data['unit']
-            value = data['value']
-            node = doc.createElement('data')
-            node.setAttribute('name', name)
-            node.setAttribute('id', id)
-            node.setAttribute('unit', unit)
-            node.setAttribute('value', str(value))
-            root.appendChild(node)
-        return xml.dom.minidom.Document.toprettyxml(doc)
-
-    def data_to_json(self, data_list):
-        import simplejson as json
-        return json.dumps(data_list)
-
-    def data_to_yaml(self, data_list):
-        import yaml
-        return yaml.dump_all(data_list, default_flow_style=False)
