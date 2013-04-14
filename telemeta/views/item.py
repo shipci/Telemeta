@@ -447,7 +447,7 @@ class ItemView(object):
         analyzers_data = self.item_get_analyzers_results(public_id)
         if not analyzers_data: raise Http404
         container = AnalyzerResultContainer()
-        serialized = AnalyzerResultContainer(analyzers_data).to_json()
+        serialized = AnalyzerResultContainer(analyzers_data).to_yaml()
         mime_type = 'text/plain'
         response = HttpResponse(serialized, mimetype=mime_type)
         response['Content-Disposition'] = 'attachment; filename='+public_id+'.yaml'
