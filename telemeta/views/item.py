@@ -430,7 +430,11 @@ class ItemView(object):
         return response
 
     def item_get_analyzers_results(self, public_id):
-        item = MediaItem.objects.get(public_id=public_id)
+        items = MediaItem.objects.filter(public_id=public_id)
+        if not items:
+            return []
+        else:
+            item = items[0]
         analyses = MediaItemAnalysis.objects.filter(item=item)
         if len(analyses) == 0: self.item_analyze(item)
         analyses = MediaItemAnalysis.objects.filter(item=item)
