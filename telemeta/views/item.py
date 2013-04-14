@@ -415,6 +415,7 @@ class ItemView(object):
 
     def item_analyze_xml(self, request, public_id):
         analyzers_data = self.item_get_analyzers_results(public_id)
+        if not analyzers_data: raise Http404
         serialized = self.cache_data.get_analyzer_xml(analyzers_data)
         mime_type = 'text/xml'
         response = HttpResponse(serialized, mimetype=mime_type)
@@ -423,6 +424,7 @@ class ItemView(object):
 
     def item_analyze_json(self, request, public_id):
         analyzers_data = self.item_get_analyzers_results(public_id)
+        if not analyzers_data: raise Http404
         serialized = self.cache_data.get_analyzer_json(analyzers_data)
         mime_type = 'application/json'
         response = HttpResponse(serialized, mimetype=mime_type)
@@ -430,7 +432,7 @@ class ItemView(object):
         return response
 
     def item_get_analyzers_results(self, public_id):
-        items = MediaItem.objects.filter(public_id=public_id)
+        items = MediaItem.objects.filter(code=public_id)
         if not items:
             return []
         else:
