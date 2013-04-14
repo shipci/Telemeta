@@ -408,9 +408,9 @@ class ItemView(object):
                 for analyzer in analyzers_sub:
                     if hasattr(analyzer, 'results'):
                         for result in analyzer.results():
-                            analysis = MediaItemAnalysis(item=item, name=result.name,
-                                    analyzer_id=result.id,
-                                    unit=result.unit, value=str(result.value))
+                            analysis = MediaItemAnalysis(item=item, name=result['name'],
+                                    analyzer_id=result['id'],
+                                    unit=result['unit'], value=str(result['value']))
                             analysis.save()
                     else:
                         value = analyzer.result()
