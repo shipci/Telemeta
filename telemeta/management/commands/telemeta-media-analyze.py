@@ -12,7 +12,7 @@ class Command(BaseCommand):
     args = ""
     help = "Download and import a media item"
     option_list = BaseCommand.option_list + (
-            make_option('--all',
+            make_option('--force',
                 action='store_true',
                 dest='force',
                 default=False,
@@ -26,6 +26,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        import time
         force = options['force']
 
         for collection in MediaCollection.objects.filter():
