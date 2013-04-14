@@ -42,10 +42,10 @@ from timeside.analyzer.core import AnalyzerResultContainer
 class ItemView(object):
     """Provide Item web UI methods"""
 
-    graphers = timeside.core.processors(timeside.api.IGrapher)
-    decoders = timeside.core.processors(timeside.api.IDecoder)
-    encoders = timeside.core.processors(timeside.api.IEncoder)
-    analyzers = timeside.core.processors(timeside.api.IAnalyzer)
+    graphers = timeside.get_processors(timeside.api.IGrapher)
+    decoders = timeside.get_processors(timeside.api.IDecoder)
+    encoders = timeside.get_processors(timeside.api.IEncoder)
+    analyzers = timeside.get_processors(timeside.api.IAnalyzer)
     cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
