@@ -328,11 +328,11 @@ class ItemView(object):
         item.delete()
         return redirect('telemeta-collection-detail', collection.code)
 
-    def item_analyze(self, item):
+    def item_analyze(self, item, force = False):
         analyses = MediaItemAnalysis.objects.filter(item=item)
         mime_type = ''
 
-        if analyses:
+        if analyses and force == False:
             for analysis in analyses:
                 if not item.approx_duration and analysis.analyzer_id == 'duration':
                     value = analysis.value
