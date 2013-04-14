@@ -198,14 +198,14 @@ and the following processors::
 Add the following variables::
 
     TELEMETA_ORGANIZATION = "foo.org"                 # name of the organization which hosts this installation
-    TELEMETA_SUBJECTS = ""                            # tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
+    TELEMETA_SUBJECTS = ()                            # list of subject keywords (used for Dublin Core), such as "Ethnology", etc...
     TELEMETA_DESCRIPTION = 'foo sound database'       # the description of the site
     TELEMETA_MEDIA_DIR = MEDIA_ROOT + 'foo_media/'    # the path where media files will be imported
     TELEMETA_CACHE_DIR = MEDIA_ROOT + 'foo_cache/'    # absolute path to the cache directory that you just created
     TELEMETA_GMAP_KEY = ''                            # your Google Map API key
     TELEMETA_DOWNLOAD_ENABLED = True                  # True to enable raw audio data download
-    TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')       # tuple of authorized streaming formats. Ex: ('mp3', 'ogg')
-    TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg') # tuple of authorized download formats. Ex: ('wav', 'mp3', 'webm')
+    TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')       # list of authorized streaming formats. Ex: ('mp3', 'ogg')
+    TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg') # list of authorized download formats. Ex: ('wav', 'mp3', 'webm')
     TELEMETA_PUBLIC_ACCESS_PERIOD = 0                 # number of years above which item files are automagically published
     EMAIL_HOST = 'localhost'                          # your default SMTP server
     DEFAULT_FROM_EMAIL = 'root@localhost'             # the default sending email address
