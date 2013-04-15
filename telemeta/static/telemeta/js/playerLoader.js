@@ -88,18 +88,18 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
     //is not always an error, (eg, the user not logged in and the item has only metadata public).
     //Ideally, we should not enter here in some cases. For the moment we just catch the case div#player doesnt exist and
     //we return
-    
+
 //    var maxTime = 10000;
 //    //if the loading span is still visible in 10 seconds, throw an error:
 //    setTimeout(function(){
 //        end('SoundManager is not responding. Try to:\n - Reload the page\n - Empty the cache (see browser preferences) and reload the page\n - Restart the browser');
 //    },maxTime);
-     
-    
+
+
     var pFloat = parseFloat;
     //load analyser xml and proceed on success:
     $J.ajax({
-        url: analizerUrl, 
+        url: analizerUrl,
         dataType: 'xml',
         error:function(){
             end('Error loading analyzer');
@@ -118,12 +118,12 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                 analyzerContentArray.push(elm.attr('unit'));
                 analyzerContentArray.push('</td></tr>');
             });
-               
+
             var duration = $J(data).find('#duration').attr('value');
             duration = duration.split(":");
             //format duration
             var pin = parseInt;
-                
+
             var radix = 10; //REALLY IMPORTANT. IF ANY ELEMENT OF DURATION STARTS WITH '0', THEN THE RADIX IS CONSIDERED EITHER OCTAL OR HEXADECIMAL
             //WE WANT TO PREVENT NON 10-BASED RADIX PARSING
             var timeInMSecs=pin(duration[0],radix)*3600+pin(duration[1],radix)*60+pFloat(duration[2],radix);
@@ -131,10 +131,10 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
             //callback to be executed after json gets the markers (see last line below)
             var callbackAfterMarkersLoading = function(data) {
                 var markerMap = [];
-            
+
                 if(data && data.result && data.result.length>0){
                     var result = data.result;
-                
+
                     //add markers to the map. No listeners associated to it (for the moment)
                     //var mapAdd = map.add;
                     for(var i =0; i< result.length; i++){
@@ -156,7 +156,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                 }
 
                 //defining the marker callback:
-                
+
                 var markerMode = currentUserName || false;
                 if(markerMode){
                     //markerMode becomes a function:
@@ -175,10 +175,10 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         return m;
                     };
                 }
-               
+
 
                 //creating the visualizer <select/> tag
-                
+
 //                var playerDiv = '#player';
 //                if(!($J(playerDiv).length)){
 //                    end(); //stop without raising error messages. If passed within Timeside.load, an error will be thrown
@@ -267,7 +267,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                     //(wait for json success)
                     mapUI.bind('remove',function(data){
                         var marker = data.marker;
-                            
+
                         var functionOnSuccess = function(){
                             player.removeMarker.apply(player,[data.marker]);//map.remove + fires markerMoved on player
                         };
@@ -289,7 +289,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
 //                            map.toArray()[idx].isEditable = data.value;
 //                            player.getRuler().setEditable(idx,data.value, false);
                         }
-                    }); 
+                    });
 
                     //bind save marker -> player save
                     var map = player.getMarkerMap();
@@ -339,7 +339,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                     //populate the analyzers table
                     $J('#analyzer_div_id').find('table').find('tbody:last').append(analyzerContentArray.join(""));
 
-                    
+
                     //Eventually, do 3 last things:
                     //1) call end (without arguments simply clears the wait span and avoid subsequent calls to end(msg) to
                     //display error messages)
@@ -362,7 +362,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                         wdw.onbeforeunload = confirmExit;
                     }
 
-                   
+
                     if(map && wdw.PopupDiv){
                         var POPUP_TIMEOUT=3; //in seconds. Zero means: no popup, negative numbers:
                         //popup stays infinitely on the player (until next marker cross)
@@ -407,9 +407,9 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                                     if(next === undefined || next-data.currentSoundPosition > POPUP_TIMEOUT){
                                         popupTimeoutId = popupdiv.setTimeout('close',POPUP_TIMEOUT*1000);
                                     }
-                            
+
                                 });
-                                
+
 
                             }
                             var draggingSomeMarker = false;
@@ -494,7 +494,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
                 Timeside.load(timesideConfig);
 
             };
-                
+
             //execute all the stuff once the document is ready:
 //            var onSuccess = function(data){
 //                $J(wdw).ready(function(){
@@ -505,7 +505,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
             json([itemId],"telemeta.get_markers", callbackAfterMarkersLoading,callbackAfterMarkersLoading);
         }
     });
-   
+
 }
 
 
@@ -532,7 +532,7 @@ function loadPlayer(analizerUrl, soundUrl, soundImgSize, itemId, visualizers, cu
 */
 function setUpPlayerTabs() {//called from within controller.js once all markers have been loaded.
     //this is because we need all divs to be visible to calculate size. selIndex is optional, it defaults to 0
-    
+
     var $J = jQuery;
     var tabs_ = arguments[0];
     var divs_ = arguments[1]; //they might be ctually any content, div is a shoertand
