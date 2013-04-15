@@ -72,6 +72,10 @@ mimetypes.add_type('video/webm','.webm')
 
 app_name = 'telemeta'
 
+if hasattr(settings, 'TELEMETA_MEDIA_DIR'):
+    upload_to = settings.TELEMETA_MEDIA_DIR
+else:
+    upload_to = 'items/'
 
 def get_random_hash():
     hash = random.getrandbits(64)
@@ -140,7 +144,7 @@ class MediaRelated(MediaResource):
     mime_type       = CharField(_('mime_type'), null=True)
     url             = CharField(_('url'), max_length=500)
     credits         = CharField(_('credits'))
-    file            = FileField(_('file'), upload_to='items/%Y/%m/%d',
+    file            = FileField(_('file'), upload_to=upload_to+'/%Y/%m/%d',
                                 db_column="filename", max_length=255)
 
     def is_image(self):
@@ -389,7 +393,7 @@ class MediaItem(MediaResource):
     mimetype              = CharField(_('mime type'), max_length=255, blank=True)
 
     # Media
-    file                  = FileField(_('file'), upload_to='items/%Y/%m/%d',
+    file                  = FileField(_('file'), upload_to=upload_to+'/%Y/%m/%d',
                                       db_column="filename", max_length=1024)
 
     # Technical data
@@ -636,7 +640,7 @@ class MediaItemTranscoded(MediaResource):
     mimetype        = models.CharField(_('mime_type'), max_length=255, blank=True)
     date_added      = DateTimeField(_('date'), auto_now_add=True)
     status          = models.IntegerField(_('status'), choices=ITEM_TRANSODING_STATUS, default=1)
-    file            = models.FileField(_('file'), upload_to='items/%Y/%m/%d', max_length=1024, blank=True)
+    file            = models.FileField(_('file'), upload_to=upload_to+'/%Y/%m/%d', max_length=1024, blank=True)
 
     @property
     def mime_type(self):

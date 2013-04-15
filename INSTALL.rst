@@ -197,17 +197,18 @@ and the following processors::
 
 Add the following variables::
 
-    TELEMETA_ORGANIZATION =         name of the organization which hosts this installation
-    TELEMETA_SUBJECTS =             tuple of subject keywords (used for Dublin Core), such as "Ethnology", etc...
-    TELEMETA_DESCRIPTION =          the description of the site
-    TELEMETA_CACHE_DIR =            absolute path to the cache directory that you just created
-    TELEMETA_GMAP_KEY =             your Google Map API key
-    TELEMETA_DOWNLOAD_ENABLED =     True to enable raw audio data download
-    TELEMETA_STREAMING_FORMATS =    tuple of authorized streaming formats. Ex: ('mp3', 'ogg')
-    TELEMETA_DOWNLOAD_FORMATS =     tuple of authorized download formats. Ex: ('wav', 'mp3', 'webm')
-    TELEMETA_PUBLIC_ACCESS_PERIOD = number of years above which item files are automagically published
-    EMAIL_HOST =                    your default SMTP server
-    DEFAULT_FROM_EMAIL =            the default sending email address
+    TELEMETA_ORGANIZATION = "foo.org"                 # name of the organization which hosts this installation
+    TELEMETA_SUBJECTS = ()                            # list of subject keywords (used for Dublin Core), such as "Ethnology", etc...
+    TELEMETA_DESCRIPTION = 'foo sound database'       # the description of the site
+    TELEMETA_MEDIA_DIR = MEDIA_ROOT + 'foo_media/'    # the path where media files will be imported
+    TELEMETA_CACHE_DIR = MEDIA_ROOT + 'foo_cache/'    # absolute path to the cache directory that you just created
+    TELEMETA_GMAP_KEY = ''                            # your Google Map API key
+    TELEMETA_DOWNLOAD_ENABLED = True                  # True to enable raw audio data download
+    TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')       # list of authorized streaming formats. Ex: ('mp3', 'ogg')
+    TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg') # list of authorized download formats. Ex: ('wav', 'mp3', 'webm')
+    TELEMETA_PUBLIC_ACCESS_PERIOD = 0                 # number of years above which item files are automagically published
+    EMAIL_HOST = 'localhost'                          # your default SMTP server
+    DEFAULT_FROM_EMAIL = 'root@localhost'             # the default sending email address
 
 Just paste the lines below::
 
@@ -249,7 +250,7 @@ The simplest case is to have telemeta running at public root. To do so, add this
 
 You should also bring the django admin::
 
-    (r'^admin/django/', include(admin.site.urls)),
+    (r'^admin/', include(admin.site.urls)),
 
 Please also uncomment::
 
@@ -273,8 +274,14 @@ If you want tu use the data schema migration system (South needed, see previous 
     ./manage.py migrate telemeta
     ./manage.py collectstatic
 
+Import some data
+----------------
 
-Start the project
+Import some media files to the database::
+
+    ./manage.py telemeta-import-media --collection-title Tonas --collection-code tonas files_to_import/*/*.wav
+
+Start the web server
 --------------------
 
 We are ready to start the telemeta server::
@@ -289,9 +296,8 @@ To get it on your network interface::
 
     python manage.py runserver 192.168.0.10:9000
 
-
 Test it
------------
+-------
 
 Go to this URL with your browser::
 
@@ -310,6 +316,12 @@ Configure the site domain name in admin > general admin > sites
 
 Test it and enjoy it !
 
+Analyze all the files
+---------------------
+
+To analyze all the files in your collections::
+
+    ./manage telemeta-media-analyze
 
 --------------------------
 Template customization

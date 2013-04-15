@@ -37,14 +37,15 @@
 import mimetypes
 from telemeta.views.core import *
 
+from timeside.analyzer.core import AnalyzerResultContainer
 
 class ItemView(object):
     """Provide Item web UI methods"""
 
-    graphers = timeside.core.processors(timeside.api.IGrapher)
-    decoders = timeside.core.processors(timeside.api.IDecoder)
-    encoders = timeside.core.processors(timeside.api.IEncoder)
-    analyzers = timeside.core.processors(timeside.api.IAnalyzer)
+    graphers = timeside.get_processors(timeside.api.IGrapher)
+    decoders = timeside.get_processors(timeside.api.IDecoder)
+    encoders = timeside.get_processors(timeside.api.IEncoder)
+    analyzers = timeside.get_processors(timeside.api.IAnalyzer)
     cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
     cache_export = TelemetaCache(settings.TELEMETA_EXPORT_CACHE_DIR)
 
@@ -337,11 +338,14 @@ class ItemView(object):
         item.delete()
         return redirect('telemeta-collection-detail', collection.code)
 
-    def item_analyze(self, item):
+    def item_analyze(self, item, force = False):
         analyses = MediaItemAnalysis.objects.filter(item=item)
+        if force == True:
+            # force requested, remove all existing analyses
+            for analyse in analyses: analyse.delete()
         mime_type = ''
 
-        if analyses:
+        if analyses and force == False:
             for analysis in analyses:
                 if not item.approx_duration and analysis.analyzer_id == 'duration':
                     value = analysis.value
@@ -411,11 +415,19 @@ class ItemView(object):
                 analysis.save()
 
                 for analyzer in analyzers_sub:
-                    value = analyzer.result()
-                    analysis = MediaItemAnalysis(item=item, name=analyzer.name(),
-                                                 analyzer_id=analyzer.id(),
-                                                 unit=analyzer.unit(), value=str(value))
-                    analysis.save()
+                    if hasattr(analyzer, 'results'):
+                        for result in analyzer.results():
+                            analysis = MediaItemAnalysis(item=item, name=result['name'],
+                                    analyzer_id=result['id'],
+                                    unit=result['unit'], value=str(result['value']))
+                            analysis.save()
+                    else:
+                        value = analyzer.result()
+                        analysis = MediaItemAnalysis(item=item, name=analyzer.name(),
+                                analyzer_id=analyzer.id(),
+                                unit=analyzer.unit(), value=str(value))
+                        analysis.save()
+
 
 #                FIXME: parse tags on first load
 #                tags = decoder.tags
@@ -423,15 +435,46 @@ class ItemView(object):
         return mime_type
 
     def item_analyze_xml(self, request, public_id):
-        item = MediaItem.objects.get(public_id=public_id)
+        analyzers_data = self.item_get_analyzers_results(public_id)
+        if not analyzers_data: raise Http404
+        serialized = AnalyzerResultContainer(analyzers_data).to_xml()
+        mime_type = 'text/xml'
+        response = HttpResponse(serialized, mimetype=mime_type)
+        response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
+        return response
+
+    def item_analyze_json(self, request, public_id):
+        analyzers_data = self.item_get_analyzers_results(public_id)
+        if not analyzers_data: raise Http404
+        serialized = AnalyzerResultContainer(analyzers_data).to_json()
+        mime_type = 'application/json'
+        response = HttpResponse(serialized, mimetype=mime_type)
+        response['Content-Disposition'] = 'attachment; filename='+public_id+'.json'
+        return response
+
+    def item_analyze_yaml(self, request, public_id):
+        analyzers_data = self.item_get_analyzers_results(public_id)
+        if not analyzers_data: raise Http404
+        container = AnalyzerResultContainer()
+        serialized = AnalyzerResultContainer(analyzers_data).to_yaml()
+        mime_type = 'text/plain'
+        response = HttpResponse(serialized, mimetype=mime_type)
+        response['Content-Disposition'] = 'attachment; filename='+public_id+'.yaml'
+        return response
+
+    def item_get_analyzers_results(self, public_id):
+        items = MediaItem.objects.filter(code=public_id)
+        if not items:
+            return []
+        else:
+            item = items[0]
+        analyses = MediaItemAnalysis.objects.filter(item=item)
+        if len(analyses) == 0: self.item_analyze(item)
         analyses = MediaItemAnalysis.objects.filter(item=item)
         analyzers = []
         for analysis in analyses:
             analyzers.append(analysis.to_dict())
-        mime_type = 'text/xml'
-        response = HttpResponse(self.cache_data.get_analyzer_xml(analyzers), mimetype=mime_type)
-        response['Content-Disposition'] = 'attachment; filename='+public_id+'.xml'
-        return response
+        return analyzers
 
     def item_visualize(self, request, public_id, visualizer_id, width, height):
         item = MediaItem.objects.get(public_id=public_id)
