@@ -51,6 +51,8 @@ from django.utils.translation import ugettext_lazy as _
 import re
 from django.core.exceptions import ObjectDoesNotExist
 from south.modelsinspector import add_introspection_rules
+import base64
+
 
 class Duration(object):
     """Represent a time duration"""
@@ -476,6 +478,25 @@ class CoreManager(EnhancedManager):
         return super(CoreManager, self).get(**kwargs)
 
 
+class Base64Field(models.TextField):
+
+    def contribute_to_class(self, cls, name):
+        if self.db_column is None:
+            self.db_column = name
+        self.field_name = name + '_base64'
+        super(Base64Field, self).contribute_to_class(cls, self.field_name)
+        setattr(cls, name, property(self.get_data, self.set_data))
+
+    def get_data(self, obj):
+        return base64.decodestring(getattr(obj, self.field_name))
+
+    def set_data(self, obj, data):
+        setattr(obj, self.field_name, base64.encodestring(data))
+
+    def db_type(self):
+        return 'longtext'
+
+
 # South introspection rules
 add_introspection_rules([], ["^telemeta\.models\.core\.CharField"])
 add_introspection_rules([], ["^telemeta\.models\.core\.TextField"])
@@ -488,4 +509,5 @@ add_introspection_rules([], ["^telemeta\.models\.core\.FloatField"])
 add_introspection_rules([], ["^telemeta\.models\.core\.DurationField"])
 add_introspection_rules([], ["^telemeta\.models\.core\.ForeignKey"])
 add_introspection_rules([], ["^telemeta\.models\.core\.WeakForeignKey"])
+add_introspection_rules([], ["^telemeta\.models\.core\.Base64Field"])
 

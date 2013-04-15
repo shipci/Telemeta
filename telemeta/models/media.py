@@ -37,6 +37,7 @@
 
 import re, os, random
 import mimetypes
+import numpy
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
@@ -52,6 +53,7 @@ from telemeta.models.language import *
 from telemeta.models.format import *
 from telemeta.util.kdenlive.session import *
 from django.db import models
+from django.core.files.base import ContentFile
 
 collection_published_code_regex   = '[A-Za-z0-9._-]*'
 collection_unpublished_code_regex = '[A-Za-z0-9._-]*'
@@ -543,12 +545,29 @@ class MediaItemPerformance(ModelCore):
 class MediaItemAnalysis(ModelCore):
     "Item analysis result computed by TimeSide"
 
-    element_type = 'analysis'
-    item  = ForeignKey('MediaItem', related_name="analysis", verbose_name=_('item'))
-    analyzer_id = CharField(_('id'), required=True)
-    name = CharField(_('name'))
-    value = CharField(_('value'))
-    unit = CharField(_('unit'))
+    max_value = 2
+    max_blob  = 10000
+
+    element_type    = 'analysis'
+    item            = ForeignKey('MediaItem', related_name="analysis", verbose_name=_('item'))
+    analyzer_id     = CharField(_('id'), required=True)
+    name            = CharField(_('name'))
+    value           = CharField(_('value'))
+    unit            = CharField(_('unit'))
+    blob            = Base64Field(_('blob (base64)'))
+    file            = FileField(_('file'), upload_to=upload_to+'/%Y/%m/%d',
+                                      db_column="filename", max_length=1024)
+
+    def save(self, data=None, force_insert=False, force_update=False, using=False):
+        super(MediaItemAnalysis, self).save(force_insert, force_update)
+        if data:
+            if len(data) == 1:
+                self.value = data
+            elif len(data) > self.max_value and len(data) < max_blob:
+                self.blob = data
+                self.value = str(data[:2]) + '...' + str(data[-2:])
+            elif len(data) > self.max_blob:
+                self.file.save(self.analyzer_id+'_'+self.item.code+'.np', ContentFile(data))
 
     class Meta(MetaCore):
         db_table = 'media_analysis'
@@ -560,6 +579,14 @@ class MediaItemAnalysis(ModelCore):
                 value = self.value.split('.')
                 self.value = '.'.join([value[0], value[1][:2]])
         return {'id': self.analyzer_id, 'name': self.name, 'value': self.value, 'unit': self.unit}
+
+    def get_data(self):
+        if self.file:
+            return numpy.load(self.file)
+        elif self.blob:
+            return numpy.frombuffer(base64.decodestring(self.blob),dtype=numpy.float64)
+        else:
+            return self.value
 
 
 class MediaPart(MediaResource):
