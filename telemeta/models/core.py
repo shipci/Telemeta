@@ -488,10 +488,13 @@ class Base64Field(models.TextField):
         setattr(cls, name, property(self.get_data, self.set_data))
 
     def get_data(self, obj):
-        return base64.decodestring(getattr(obj, self.field_name))
+        if getattr(obj, self.field_name):
+            return base64.decodestring(getattr(obj, self.field_name))
+        else:
+            return None
 
     def set_data(self, obj, data):
-        setattr(obj, self.field_name, base64.encodestring(data))
+        setattr(obj, self.field_name, base64.b64encode(data))
 
     def db_type(self):
         return 'longtext'

@@ -419,8 +419,8 @@ class ItemView(object):
                         for result in analyzer.results():
                             analysis = MediaItemAnalysis(item=item, name=result['name'],
                                     analyzer_id=result['id'],
-                                    unit=result['unit'])
-                            analysis.save(result['value'])
+                                    unit=result['unit'], blob=result['value'])
+                            analysis.save()
                     else:
                         value = analyzer.result()
                         analysis = MediaItemAnalysis(item=item, name=analyzer.name(),

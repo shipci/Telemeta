@@ -93,6 +93,7 @@ admin.site.register(MediaPart, MediaPartAdmin)
 admin.site.register(MediaItemRelated, MediaItemRelatedAdmin)
 admin.site.register(MediaCollectionRelated, MediaCollectionRelatedAdmin)
 admin.site.register(MediaItemTranscoded)
+admin.site.register(MediaItemAnalysis)
 
 admin.site.register(Instrument, InstrumentAdmin)
 admin.site.register(InstrumentAlias, InstrumentAliasAdmin)

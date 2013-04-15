@@ -545,8 +545,7 @@ class MediaItemPerformance(ModelCore):
 class MediaItemAnalysis(ModelCore):
     "Item analysis result computed by TimeSide"
 
-    max_value = 2
-    max_blob  = 10000
+    max_value_chars = 32
 
     element_type    = 'analysis'
     item            = ForeignKey('MediaItem', related_name="analysis", verbose_name=_('item'))
@@ -556,18 +555,7 @@ class MediaItemAnalysis(ModelCore):
     unit            = CharField(_('unit'))
     blob            = Base64Field(_('blob (base64)'), null=True, blank=True)
     file            = FileField(_('file'), upload_to=upload_to+'/%Y/%m/%d',
-                                      db_column="filename", max_length=1024)
-
-    def save(self, data=None, force_insert=False, force_update=False, using=False):
-        super(MediaItemAnalysis, self).save(force_insert, force_update)
-        if data:
-            if len(data) == 1:
-                self.value = data
-            elif len(data) > self.max_value and len(data) < max_blob:
-                self.blob = data
-                self.value = str(data[:2]) + '...' + str(data[-2:])
-            elif len(data) > self.max_blob:
-                self.file.save(self.analyzer_id+'_'+self.item.code+'.np', ContentFile(data))
+                                      db_column="filename", max_length=1024, blank=True)
 
     class Meta(MetaCore):
         db_table = 'media_analysis'
@@ -578,13 +566,30 @@ class MediaItemAnalysis(ModelCore):
             if '.' in self.value:
                 value = self.value.split('.')
                 self.value = '.'.join([value[0], value[1][:2]])
-        return {'id': self.analyzer_id, 'name': self.name, 'value': self.value, 'unit': self.unit}
+        return {'id': self.analyzer_id, 'name': self.name, 'value': self.human_value, 'unit': self.unit}
 
-    def get_data(self):
-        if self.file:
-            return numpy.load(self.file)
-        elif self.blob:
-            return numpy.frombuffer(base64.decodestring(self.blob),dtype=numpy.float64)
+    def to_numpy(self):
+        # try to get the numpy.array from the blob, file or even value
+        try:
+            if self.blob:
+                return numpy.frombuffer(self.blob,dtype=numpy.float64)
+            elif self.file:
+                return numpy.frombuffer(self.file.read(),dtype=numpy.float64)
+        except:
+            try:
+                return numpy.array([float(self.value)])
+            except:
+                return numpy.array([])
+
+    @property
+    def human_value(self):
+        if not self.value and (self.blob or self.file):
+            data = self.to_numpy()
+            self.value = str(data[:2]) + '...' + str(data[-2:])
+            self.save()
+            return self.value
+        elif len(self.value) > self.max_value_chars and not self.blob:
+            return self.value[:self.max_value_chars/2] + '...' + self.value[-self.max_value_chars/2:]
         else:
             return self.value
 
