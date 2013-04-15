@@ -38,7 +38,7 @@
 __all__ = ['ModelCore', 'MetaCore', 'DurationField', 'Duration', 'WeakForeignKey',
            'EnhancedModel', 'CharField', 'TextField', 'IntegerField', 'BooleanField',
            'DateTimeField', 'FileField', 'ForeignKey', 'FloatField', 'DateField',
-           'RequiredFieldError', 'CoreQuerySet', 'CoreManager', 'word_search_q']
+           'RequiredFieldError', 'CoreQuerySet', 'CoreManager', 'word_search_q', 'Base64Field']
 
 from django.core import exceptions
 from django import forms

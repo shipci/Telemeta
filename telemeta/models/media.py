@@ -554,7 +554,7 @@ class MediaItemAnalysis(ModelCore):
     name            = CharField(_('name'))
     value           = CharField(_('value'))
     unit            = CharField(_('unit'))
-    blob            = Base64Field(_('blob (base64)'))
+    blob            = Base64Field(_('blob (base64)'), null=True, blank=True)
     file            = FileField(_('file'), upload_to=upload_to+'/%Y/%m/%d',
                                       db_column="filename", max_length=1024)
 
