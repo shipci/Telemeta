@@ -417,9 +417,13 @@ class ItemView(object):
                 for analyzer in analyzers_sub:
                     if hasattr(analyzer, 'results'):
                         for result in analyzer.results():
+                            if type(result['value']) == list or type(result['value']) == float:
+                                value = numpy.array(result['value'])
+                            else:
+                                value = result['value']
                             analysis = MediaItemAnalysis(item=item, name=result['name'],
                                     analyzer_id=result['id'],
-                                    unit=result['unit'], blob=result['value'])
+                                    unit=result['unit'], blob=value)
                             analysis.save()
                     else:
                         value = analyzer.result()
