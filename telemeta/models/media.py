@@ -561,6 +561,9 @@ class MediaItemAnalysis(ModelCore):
         db_table = 'media_analysis'
         ordering = ['name']
 
+    def __unicode__(self):
+        return ' - '.join([self.item.code, self.analyzer_id])
+
     def to_dict(self):
         if self.analyzer_id == 'duration':
             if '.' in self.value:
