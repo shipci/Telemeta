@@ -195,9 +195,6 @@ a img { border: none; }
     padding: 2px;
     /* margin: 5px 0 0; */
     font-size: 1em;
-}
-
-.markers {
     max-height: 500px;
     overflow-y: scroll;
 }
