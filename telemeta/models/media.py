@@ -570,6 +570,22 @@ class MediaItemAnalysis(ModelCore):
 
     def to_numpy(self):
         # try to get the numpy.array from the blob, file or even value
+        from ast import literal_eval as safe_eval
+        value = None
+        if self.blob != None: value = self.blob
+        elif self.file:
+            container = AnalyzerResultContainer()
+            value = container.from_numpy(self.file)
+        else:
+            # convert from text field back to python value
+            try:
+                value = safe_eval(self.value)
+                if type(value) == list:
+                    value = numpy.array(value)
+            except:
+                value = self.value
+        return value
+        """
         try:
             if self.blob:
                 return numpy.frombuffer(self.blob,dtype=numpy.float64)
@@ -580,9 +596,11 @@ class MediaItemAnalysis(ModelCore):
                 return numpy.array([float(self.value)])
             except:
                 return numpy.array([])
+        """
 
     @property
     def human_value(self):
+        """
         if not self.value and (self.blob or self.file):
             data = self.to_numpy()
             self.value = str(data[:2]) + '...' + str(data[-2:])
@@ -592,6 +610,20 @@ class MediaItemAnalysis(ModelCore):
             return self.value[:self.max_value_chars/2] + '...' + self.value[-self.max_value_chars/2:]
         else:
             return self.value
+        """
+        if self.blob != None:
+            # val = self.blob
+            return u'hidden'
+        elif self.file:
+            return u'hidden'
+        else:
+            val = self.to_numpy()
+            if len(str(val)) > self.max_value_chars:
+                if type(val) == numpy.ndarray and len(val.shape) > 1:
+                    return 'array of shape ' + repr(val.shape)
+                return repr(list(val[:3]) + ['...'] + list(val[-3:]))
+            else:
+                return str(val)
 
 
 class MediaPart(MediaResource):
