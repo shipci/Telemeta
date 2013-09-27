@@ -216,7 +216,7 @@ Item : <a href="{% url telemeta-item-detail item.public_id %}">{{ item }}</a>
 
             <dt>{% trans "Interprets" %}</dt>
             {% if item.performances %}
-             <dd>{% for performance in item.performances.all %}{{ performance.musicians|default:"" }}, {% endfor %}</dd>
+             <dd>{% for performance in item.performances.all %}{{ performance.musicians|default:"" }}; {% endfor %}</dd>
             {% endif %}
 
             {% dl_field item "author" %}
