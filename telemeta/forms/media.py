@@ -71,7 +71,7 @@ class MediaItemForm(ModelForm):
         model = MediaItem
         exclude = ('alt_title', 'copied_from_item', 'cultural_area', 'ethnic_group', 'language',
                    'context_comment', 'moda_execut', 'vernacular_style', 'generic_style',
-                   'track', 'collector', 'collector_selection', 'collector_from_collection',
+                   'collector', 'collector_selection', 'collector_from_collection',
                    'creator_reference', 'old_code')
 
     def clean_code(self):
