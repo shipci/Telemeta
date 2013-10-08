@@ -48,7 +48,7 @@ class TelemetaCache(object):
             try:
                 os.makedirs(dir)
             except IOError:
-                raise 'Could not create the '+dir+' directory !'
+                raise 'Could not create the ' + dir + ' directory !'
 
     def get_files(self):
         list = []
@@ -75,7 +75,7 @@ class TelemetaCache(object):
 
     def read_bin(self, file):
         path = self.dir + os.sep + file
-        f = open(path,  'r')
+        f = open(path, 'r')
         data = f.read()
         f.close()
         return data
@@ -83,7 +83,7 @@ class TelemetaCache(object):
     def read_stream_bin(self, file):
         path = self.dir + os.sep + file
         chunk_size = 0x80000
-        f = open(path,  'r')
+        f = open(path, 'r')
         while True:
             chunk = f.read(chunk_size)
             if not len(chunk):
