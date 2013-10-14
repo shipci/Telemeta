@@ -399,11 +399,13 @@ class ItemView(object):
                 analysis.save()
 
                 for analyzer in analyzers_sub:
-                    value = analyzer.result()
-                    analysis = MediaItemAnalysis(item=item, name=analyzer.name(),
-                                                 analyzer_id=analyzer.id(),
-                                                 unit=analyzer.unit(), value=str(value))
-                    analysis.save()
+                    for key in analyzer.results.keys():
+                        analysis = MediaItemAnalysis(item = item,
+                                    name = analyzer.results[key].name,
+                                    analyzer_id = analyzer.results[key].id,
+                                    unit = analyzer.results[key].unit,
+                                    value = str(analyzer.results[key].data))
+                        analysis.save()
 
                 analyses = MediaItemAnalysis.objects.filter(item=item)
 
