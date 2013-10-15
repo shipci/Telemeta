@@ -28,9 +28,11 @@ class Command(BaseCommand):
         for root, dirs, files in os.walk(media_dir):
             for filename in files:
                 path = root + os.sep + filename
-                items = MediaItem.objects.filter(code=filename)
+                filename_pre, ext = os.path.splitext(filename)
+                items = MediaItem.objects.filter(code=filename_pre)
                 if not items:
-                    item = MediaItem(collection=collection, code=filename)
+                    item = MediaItem(collection=collection, code=filename_pre)
+                    item.title = filename_pre
                     f = open(path, 'r')
                     file_content = ContentFile(f.read())
                     item.file.save(filename, file_content)
@@ -38,4 +40,4 @@ class Command(BaseCommand):
                     item.save()
                     print 'item created: ' + item.code
                 else:
-                    print 'item already exists: ' + item.code
+                    print 'item already exists: ' + items[0].code
