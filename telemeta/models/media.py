@@ -418,7 +418,6 @@ class MediaItem(MediaResource):
     def mime_type(self):
         if not self.mimetype or self.mimetype == 'none':
             if self.file:
-                print self.file.path
                 if os.path.exists(self.file.path):
                     self.mimetype = mimetypes.guess_type(self.file.path)[0]
                     self.save()
@@ -449,9 +448,10 @@ class MediaItem(MediaResource):
         return False
 
     def clean(self):
-        if self.code and not self.is_valid_code(self.code):
-            raise ValidationError("%s is not a valid item code for collection %s"
-                                        % (self.code, self.collection.code))
+        #if self.code and not self.is_valid_code(self.code):
+            #raise ValidationError("%s is not a valid item code for collection %s"
+                                        #% (self.code, self.collection.code))
+        pass
 
     def save(self, force_insert=False, force_update=False):
         super(MediaItem, self).save(force_insert, force_update)
