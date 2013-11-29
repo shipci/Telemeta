@@ -19,12 +19,13 @@ function ResourceMap(list, cfg) {
             });
             that.resize();
         });
-        google.load('maps', '2');
-        google.setOnLoadCallback(function() {
+        
+        
             that.createMap();
             that.parseResources();
-            $(window).bind('unload', google.maps.Unload);
-        });
+            // $(window).bind('unload', google.maps.Unload);
+        
+
     }
 
     that.resize = function() {
@@ -90,29 +91,42 @@ function ResourceMap(list, cfg) {
                 //var name      = $.trim(e.find('.resourcemap-name').text());
                 //var link      = e.find('a').attr('href');
                 //var linktitle = e.find('a').attr('title');
-                var marker    = new google.maps.Marker(new GLatLng(lat, lng), {title: name});
+                var marker    = new google.maps.Marker(new google.maps.LatLng(lat, lng), {title: name, map: that.map});
                 //var info      = that.makeInfoBox(name, link, linktitle);
-                google.maps.Event.addListener(marker, "click", function() {
+                google.maps.event.addListener(marker, "click", function() {
                     that.showResourceInfo(marker, e);
                     //marker.openInfoWindowHtml(info);
                 });
-                that.map.addOverlay(marker);
+                
             }
         });
     }        
 
     that.createMap = function() {
-        that.log("GMap loaded");
-        if (google.maps.BrowserIsCompatible()) {
-            that.map = new google.maps.Map2(that.container[0]);
-            var bounds = new GLatLngBounds();
-            that.map.setCenter(new GLatLng(0, 0), that.map.getBoundsZoomLevel(bounds)); // France
-            that.map.setUIToDefault();
-        } else {
-            that.log("Browser isn't compatible with GMap ?!");
-            that.toggle();
-        }
+          var mapOptions = {
+            zoom: 2,
+            center: new google.maps.LatLng(42.0, 6.0)
+            };
+        that.log("GMap loaded");    
+        that.map = new google.maps.Map(that.container[0], mapOptions);
+        // var bounds = new google.maps.LatLngBounds();
+        // that.map.setCenter(new google.maps.LatLng(0, 0), that.map.getBoundsZoomLevel(bounds)); // France
+        // that.map.setUIToDefault();
     }
 
     that.init(list, cfg);
+}
+
+
+function initialize() {
+    var resourceMap = new ResourceMap('.continents', {
+    'countryInfoUri': '/geo/country_info/RESOURCEID/'});
+}
+
+
+function loadScript() {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize';
+  document.body.appendChild(script);
 }
