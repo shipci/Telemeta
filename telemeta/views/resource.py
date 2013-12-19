@@ -38,6 +38,34 @@
 from telemeta.views.core import *
 
 
+class FondsListView(ListView):
+
+    model = MediaFonds
+    template_name="telemeta/resource_list.html"
+    
+    def get_queryset(self):
+        return MediaFonds.objects.all().order_by('code')
+
+    def get_context_data(self, **kwargs):
+        context = super(FondsListView, self).get_context_data(**kwargs)
+        context['type'] = self.model.element_type
+        return context
+
+
+class CorpusListView(ListView):
+
+    model = MediaCorpus
+    template_name="telemeta/resource_list.html"
+    
+    def get_queryset(self):
+        return MediaCorpus.objects.all().order_by('code')
+
+    def get_context_data(self, **kwargs):
+        context = super(CorpusListView, self).get_context_data(**kwargs)
+        context['type'] = self.model.element_type
+        return context
+
+
 class ResourceView(object):
     """Provide Resource web UI methods"""
 

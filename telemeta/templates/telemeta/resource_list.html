@@ -4,8 +4,8 @@
 
 {% block head_title %}{% trans type %} - {{ block.super }}{% endblock %}
 
-{% block title%}
-<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type|capitalize }}
+{% block title %}
+<img src="{{ STATIC_URL }}telemeta/images/{{ type }}.png" style="vertical-align:middle" /> {{ type|capitalize }} ({{ object_list|length }})
 {% endblock %}
 
 {% block title_buttons %}
@@ -15,9 +15,7 @@
 {% endblock %}
 
 {% block content %}
-{% with object_list as resources and type as type %}
 <div class="fullpage">
 {% include "telemeta/inc/resource_list.html" %}
 </div>
-{% endwith %}
 {% endblock %}

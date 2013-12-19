@@ -37,10 +37,9 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.views.generic.simple import redirect_to
-from telemeta.models import MediaItem, MediaCollection, MediaItemMarker, MediaCorpus, MediaFonds
-from telemeta.views import HomeView, AdminView, CollectionView, ItemView, \
-                                InstrumentView, PlaylistView, ProfileView, GeoView, \
-                                LastestRevisionsFeed, ResourceView, UserRevisionsFeed
+from telemeta.models import *
+from telemeta.views import *
+
 from jsonrpc import jsonrpc_site
 import os.path
 import telemeta.config
@@ -172,12 +171,10 @@ urlpatterns = patterns('',
 
     # RESOURCES
     # Corpus list
-    url(r'^archives/corpus/$', 'django.views.generic.list_detail.object_list',
-        dict(all_corpus, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'corpus'}), name="telemeta-corpus"),
+    url(r'^archives/corpus/$', CorpusListView.as_view(), name="telemeta-corpus"),
 
     # Fonds list
-    url(r'^archives/fonds/$', 'django.views.generic.list_detail.object_list',
-        dict(all_fonds, paginate_by=20, template_name="telemeta/resource_list.html", extra_context={'type':'fonds'}), name="telemeta-fonds"),
+    url(r'^archives/fonds/$', FondsListView.as_view(), name="telemeta-fonds"),
 
     # Generic resource
     url(r'^archives/(?P<type>[A-Za-z0-9._-]+)/(?P<public_id>[A-Za-z0-9._-]+)/$', resource_view.detail,
