@@ -36,6 +36,7 @@
 
 
 from telemeta.views.core import *
+from django.views.generic import list_detail
 
 
 class HomeView(object):

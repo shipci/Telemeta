@@ -304,6 +304,10 @@ class MediaCollection(MediaResource):
 
     computed_duration.verbose_name = _('computed duration')
 
+    @property
+    def parents(self):
+        return self.corpus.all()
+
     def save(self, force_insert=False, force_update=False, user=None, code=None):
         super(MediaCollection, self).save(force_insert, force_update)
 
@@ -480,6 +484,10 @@ class MediaItem(MediaResource):
         return instruments
 
         instruments.verbose_name = _("instruments")
+
+    @property
+    def parents(self):
+        return [self.collection]
 
 
 class MediaItemRelated(MediaRelated):
@@ -755,6 +763,10 @@ class MediaCorpus(MediaBaseResource):
     objects = MediaCorpusManager()
 
     @property
+    def parents(self):
+        return self.fonds.all()
+
+    @property
     def public_id(self):
         return self.code
 
@@ -778,6 +790,10 @@ class MediaFonds(MediaBaseResource):
     @property
     def public_id(self):
         return self.code
+
+    @property
+    def parents(self):
+        return None
 
     class Meta(MetaCore):
         db_table = 'media_fonds'

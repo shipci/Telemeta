@@ -36,15 +36,28 @@
 
 
 from telemeta.views.core import *
+from django.views.generic.list import MultipleObjectMixin
 
 
-class FondsListView(ListView):
+class BreadCrumbsMixin(MultipleObjectMixin):
+
+    def get_context_data(self, **kwargs):
+        context = super(BreadCrumbsMixin, self).get_context_data(**kwargs)
+        context['fonds_list_count'] = MediaFonds.objects.all().count()
+        context['corpus_list_count'] = MediaCorpus.objects.all().count()
+        context['collection_list_count'] = MediaCollection.objects.all().count()
+        context['item_list_count'] = MediaItem.objects.all().count()
+        return context
+
+
+
+class FondsListView(BreadCrumbsMixin, ListView):
 
     model = MediaFonds
     template_name="telemeta/resource_list.html"
     
     def get_queryset(self):
-        return MediaFonds.objects.all().order_by('code')
+        return self.model.objects.all().order_by('code')
 
     def get_context_data(self, **kwargs):
         context = super(FondsListView, self).get_context_data(**kwargs)
@@ -52,17 +65,40 @@ class FondsListView(ListView):
         return context
 
 
-class CorpusListView(ListView):
+class CorpusListView(FondsListView):
 
     model = MediaCorpus
-    template_name="telemeta/resource_list.html"
-    
-    def get_queryset(self):
-        return MediaCorpus.objects.all().order_by('code')
+
+
+class FondsDetailView(BreadCrumbsMixin, DetailView):
+
+    model = MediaFonds
+    related = MediaFondsRelated
 
     def get_context_data(self, **kwargs):
-        context = super(CorpusListView, self).get_context_data(**kwargs)
+        context = super(FondsDetailView, self).get_context_data(**kwargs)
         context['type'] = self.model.element_type
+        obj = self.get_object()
+        context['resource'] = obj
+        context['children'] = obj.children.all().order_by('code')
+        context['parents'] = obj.parents
+
+        related_media = self.related.objects.filter(resource=obj)
+        check_related_media(related_media)
+        context['related_media'] = related_media
+        context['playlists'] = get_playlists(request)
+        revisions = Revision.objects.filter(element_type=type, element_id=obj.id).order_by('-time')
+        if revisions:
+            last_revision = revisions[0]
+        else:
+            last_revision = None
+        context['last_revision'] = last_revision
+
+        context['fonds_list_count'] = 1
+        context['corpus_list_count'] = context['children'].count()
+        context['collection_list_count'] = MediaCollection.objects.all().count()
+        context['item_list_count'] = MediaItem.objects.all().count()
+        
         return context
 
 
