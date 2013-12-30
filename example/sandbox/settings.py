@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'jsonrpc',
     'south',
     'sorl.thumbnail',
+    'notes',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -161,3 +162,5 @@ LOGIN_REDIRECT_URL = reverse_lazy('telemeta-desk-lists')
 
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
+
+FILE_UPLOAD_TEMP_DIR = '/tmp'

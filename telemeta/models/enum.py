@@ -36,7 +36,9 @@
 from telemeta.models.core import *
 from django.utils.translation import ugettext_lazy as _
 
+
 class Enumeration(ModelCore):
+
     "Abstract enumerations base class"
     value = CharField(_('value'), required=True, unique=True)
 
@@ -72,6 +74,7 @@ class AcquisitionMode(Enumeration):
 
 class MetadataAuthor(Enumeration):
     "Collection metadata author"
+   
 
     class Meta(MetaEnumeration):
         db_table = 'metadata_authors'
@@ -133,17 +136,20 @@ class Publisher(Enumeration):
         db_table = 'publishers'
         verbose_name = _("publisher / status")
 
+
 class PublisherCollection(ModelCore):
     "Collection which belongs to publisher"
+    
     publisher = ForeignKey('Publisher', related_name="publisher_collections", verbose_name=_('publisher'))
     value     = CharField(_('value'), required=True)
-
+  
     def __unicode__(self):
         return self.value
 
     class Meta(MetaCore):
         db_table = 'publisher_collections'
         ordering = ['value']
+
 
 class EthnicGroup(Enumeration):
     "Item ethnic group"
@@ -152,11 +158,13 @@ class EthnicGroup(Enumeration):
         db_table = 'ethnic_groups'
         verbose_name = _('population / social group')
 
+
 class EthnicGroupAlias(ModelCore):
     "Item ethnic group other name"
+    
     ethnic_group = ForeignKey('EthnicGroup', related_name="aliases", verbose_name=_('population / social group'))
     value        = CharField(_('name'), required=True)
-
+  
     class Meta(MetaCore):
         db_table = 'ethnic_group_aliases'
         unique_together = (('ethnic_group', 'value'),)

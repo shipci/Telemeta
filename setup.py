@@ -21,6 +21,8 @@ setup(
         'sorl-thumbnail',
         'django-extensions',
         'docutils',
+        'django-timezones',
+        'django-jqchat',
   ],
   platforms=['OS Independent'],
   license='CeCILL v2',

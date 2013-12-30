@@ -52,6 +52,7 @@ from telemeta.models.language import *
 from telemeta.models.format import *
 from telemeta.util.kdenlive.session import *
 from django.db import models
+from django.conf import settings
 
 
 collection_published_code_regex   = '[A-Za-z0-9._-]*'
@@ -111,7 +112,6 @@ class MediaBaseResource(MediaResource):
     title                 = CharField(_('title'), required=True)
     description           = CharField(_('description'))
     code                  = CharField(_('code'), unique=True, required=True)
-    reference             = CharField(_('reference'), unique=True, null=True)
     public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
 
@@ -214,8 +214,8 @@ class MediaCollection(MediaResource):
     publisher_serial      = CharField(_('publisher serial number'))
     booklet_author        = CharField(_('author of published notice'))
     external_references   = TextField(_('bibliographic references'))
-    doctype_code          = IntegerField(_('document type'))
-    public_access         = CharField(_('access status'), choices=PUBLIC_ACCESS_CHOICES,
+    doctype_code          = IntegerField(_('document type'), null=True, blank=True)
+    public_access         = CharField(_('public access'), choices=PUBLIC_ACCESS_CHOICES,
                                       max_length=16, default="metadata")
     auto_period_access    = BooleanField(_('automatic access after a rolling period'), default=True)
     legal_rights          = WeakForeignKey('LegalRight', related_name="collections",
@@ -765,6 +765,13 @@ class MediaCorpus(MediaBaseResource):
     @property
     def public_id(self):
         return self.code
+    
+    @property
+    def has_mediafile(self):
+        for child in self.children.all():
+            if child.has_mediafile:
+                return True
+        return False
 
     class Meta(MetaCore):
         db_table = 'media_corpus'
@@ -786,6 +793,13 @@ class MediaFonds(MediaBaseResource):
     @property
     def public_id(self):
         return self.code
+
+    @property
+    def has_mediafile(self):
+        for child in self.children.all():
+            if child.has_mediafile:
+                return True
+        return False
 
     class Meta(MetaCore):
         db_table = 'media_fonds'
