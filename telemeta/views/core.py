@@ -71,6 +71,7 @@ from django.contrib.syndication.views import Feed
 from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.contenttypes.models import ContentType
+from django.views.decorators.http import condition
 
 from telemeta.models import *
 import telemeta.models
@@ -121,13 +122,10 @@ def render(request, template, data = None, mimetype = None):
     return render_to_response(template, data, context_instance=RequestContext(request),
                               mimetype=mimetype)
 
-def stream_from_processor(decoder, proc, flag, metadata=None):
-    if metadata:
-        proc.set_metadata(metadata)
-    eod = False
-    while not eod:
-        frames, eod = proc.process(*decoder.process())
-        yield proc.chunk
+def stream_from_processor(decoder, encoder, flag):
+    pipe = decoder | encoder
+    for chunk in pipe.stream():
+        yield chunk
     flag.value = True
     flag.save()
 
