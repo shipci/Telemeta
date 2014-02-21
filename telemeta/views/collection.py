@@ -169,39 +169,49 @@ class CollectionPackageView(View):
 
     def get(self, request, *args, **kwargs):
         """
-        Create a ZIP file on disk and transmit it in chunks of 8KB,
-        without loading the whole file into memory. A similar approach can
-        be used for large dynamic PDF files.
+        Stream a ZIP file of collection data
+        without loading the whole file into memory.
+        Based on ZipStream
         """
         from telemeta.views import MarkerView
         from telemeta.backup import CollectionSerializer
         import json
-
+        import zipstream
+        
+        z = zipstream.ZipFile()        
+        cache_data = TelemetaCache(settings.TELEMETA_DATA_CACHE_DIR)
+        
         collection = self.get_object()
-        tmp_dir = getattr(settings, "FILE_UPLOAD_TEMP_DIR")
-        if not tmp_dir:
-            tmp_dir = '/tmp'
-        temp = tempfile.TemporaryFile(prefix=tmp_dir+os.sep)
-        archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED, allowZip64=True)
         serializer = CollectionSerializer(collection)
-        archive.writestr('%s/%s%s' % (collection.code, collection.code, '.xml'),
-                         serializer.get_xml().encode("utf-8"))
+
+        data = serializer.get_xml().encode("utf-8")
+        filename = collection.public_id + '.xml'
+        cache_data.write_bin(data, filename)
+        path = cache_data.dir + os.sep + filename
+        z.write(path, arcname=collection.public_id + os.sep + filename)
 
         for item in collection.items.all():
-            if item.file:
-                ext = os.path.splitext(item.file.path)[1]
-                archive.write(item.file.path, '%s/%s%s' % (collection.code, item.code, ext))
-                marker_view = MarkerView()
-                markers = marker_view.get_markers(item.id)
-                if markers:
-                    archive.writestr('%s/%s%s' % (collection.code, item.code, '.json'), json.dumps(markers))
+            filename = item.file.path.split(os.sep)[-1]
+            z.write(item.file.path, arcname=collection.public_id + os.sep + filename)
+            marker_view = MarkerView()
+            markers = marker_view.get_markers(item.id)
+            if markers:
+                data = json.dumps(markers)
+                filename = item.code + '.json'
+                cache_data.write_bin(data, filename)
+                path = cache_data.dir + os.sep + filename
+                z.write(path, arcname=collection.public_id + os.sep + filename)
 
-        archive.close()
-        wrapper = FixedFileWrapper(temp)
-        response = HttpResponse(wrapper, content_type='application/zip')
+        try:
+            from django.http import StreamingHttpResponse
+            response = StreamingHttpResponse(z, content_type='application/zip')
+        except:
+            response = HttpResponse(z, content_type='application/zip')
 
         response['Content-Disposition'] = "attachment; filename=%s.%s" % \
-                                             (collection.code, 'zip')
-        response['Content-Length'] = temp.tell()
-        temp.seek(0)
+                                             (item.code, 'zip')
         return response
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(CollectionPackageView, self).dispatch(*args, **kwargs)

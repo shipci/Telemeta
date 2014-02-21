@@ -2,7 +2,7 @@
 # Django settings for sandbox project.
 
 import os
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -112,7 +112,6 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '',
 )
 
 INSTALLED_APPS = (
@@ -129,7 +128,8 @@ INSTALLED_APPS = (
     'jsonrpc',
     'south',
     'sorl.thumbnail',
-    'notes',
+    'timezones',
+    'jqchat',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -149,8 +149,8 @@ TELEMETA_EXPORT_CACHE_DIR = MEDIA_ROOT + 'export/'
 TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "data/"
 
 TELEMETA_DOWNLOAD_ENABLED = True
-TELEMETA_STREAMING_FORMATS = ('mp3', 'webm')
-TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'webm')
+TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
+TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg', 'flac')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
 TELEMETA_DEFAULT_WAVEFORM_SIZES = ['360x130', '640x130']
 
@@ -158,9 +158,10 @@ AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = reverse_lazy('telemeta-desk-lists')
+LOGIN_REDIRECT_URL = '/desk/lists/'
 
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
-FILE_UPLOAD_TEMP_DIR = '/tmp'
+TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
+TIMESIDE_AUTO_ZOOM = False

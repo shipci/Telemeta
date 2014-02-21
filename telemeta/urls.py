@@ -95,7 +95,7 @@ urlpatterns = patterns('',
             + export_extensions + ')$',
         item_view.item_export,
         name="telemeta-item-export"),
-    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<visualizer_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$',
+    url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/visualize/(?P<grapher_id>[0-9a-z_]+)/(?P<width>[0-9A-Z]+)x(?P<height>[0-9A-Z]+)/$',
         item_view.item_visualize,
         name="telemeta-item-visualize"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/analyze/xml/$',
@@ -360,6 +360,11 @@ urlpatterns = patterns('',
             'document_root': settings.TELEMETA_CACHE_DIR,}),
 
     url(r'^', include('jqchat.urls')),
+
 )
 
+if settings.DEBUG and 'debug_toolbar' in settings.INSTALLED_APPS:
+    import debug_toolbar
+    urlpatterns += patterns('',
+    url(r'^__debug__/', include(debug_toolbar.urls)),)
 

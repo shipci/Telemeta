@@ -58,12 +58,13 @@ class TelemetaCache(object):
         return list
 
     def exists(self, file):
-        self.files = self.get_files()
+        if not file in self.files:
+            self.files = self.get_files()
         return file in self.files
 
     def delete_item_data(self, public_id):
         # public_id is the public_id of an item
-        for file in self.get_files():
+        for file in self.files:
             if public_id in file:
                 os.remove(self.dir + os.sep + file)
 
@@ -128,6 +129,6 @@ class TelemetaCache(object):
             node.setAttribute('name', name)
             node.setAttribute('id', id)
             node.setAttribute('unit', unit)
-            node.setAttribute('value', str(value))
+            node.setAttribute('value', unicode(value))
             root.appendChild(node)
         return xml.dom.minidom.Document.toprettyxml(doc)
