@@ -39,7 +39,11 @@ class Command(BaseCommand):
           make_option('-d', '--day',
             dest='day',
             help='day of the first revision'),
+          make_option('-o', '--output',
+            dest='output',
+            help='directory output'),
     )
+
     def group(self, di):
         return int(calendar.timegm(di.timetuple()))/self.binning
 
@@ -50,6 +54,7 @@ class Command(BaseCommand):
         mondays   = mdates.WeekdayLocator(mdates.MONDAY)
         monthsFmt = mdates.DateFormatter("%b '%y")
         yearsFmt = mdates.DateFormatter('%Y')
+        output = kwargs.get('output')
 
         revisions = Revision.objects.filter(time__gte=limit_date)
         list_of_dates = [r.time for r in revisions]
@@ -70,8 +75,8 @@ class Command(BaseCommand):
         ax.grid(True)
         fig.autofmt_xdate()
 
-        plt.savefig('/tmp/telemeta-revisions.png')
-        plt.savefig('/tmp/telemeta-revisions.pdf')
+        plt.savefig(output + os.sep + 'telemeta-revisions.png')
+        plt.savefig(output + os.sep + 'telemeta-revisions.pdf')
 
         #plt.show()
 
