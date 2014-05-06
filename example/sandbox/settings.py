@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'django_extensions',
+    'haystack',
     'telemeta',
     'timeside',
     'jsonrpc',
@@ -130,6 +131,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'timezones',
     'jqchat',
+    
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -165,3 +167,11 @@ DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
 TIMESIDE_AUTO_ZOOM = True
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
