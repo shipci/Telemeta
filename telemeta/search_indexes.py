@@ -1,9 +1,10 @@
 import datetime
 from haystack import indexes
-from telemeta.models import MediaItem
+from telemeta.models import *
 
 
 class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
+    
     text = indexes.CharField(document=True, use_template=True)
     # title = indexes.CharField(model_attr='title')
     # recorded_from_date = indexes.DateField(model_attr='recorded_from_date')
@@ -14,3 +15,46 @@ class MediaItemIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
         return self.get_model().objects.all()
+
+
+class MediaCollectionIndex(indexes.SearchIndex, indexes.Indexable):
+    
+    text = indexes.CharField(document=True, use_template=True)
+    # title = indexes.CharField(model_attr='title')
+    # recorded_from_date = indexes.DateField(model_attr='recorded_from_date')
+
+    def get_model(self):
+        return MediaCollection
+
+    def index_queryset(self, using=None):
+        """Used when the entire index for model is updated."""
+        return self.get_model().objects.all()
+
+
+class MediaCorpusIndex(indexes.SearchIndex, indexes.Indexable):
+    
+    text = indexes.CharField(document=True, use_template=True)
+    # title = indexes.CharField(model_attr='title')
+    # recorded_from_date = indexes.DateField(model_attr='recorded_from_date')
+
+    def get_model(self):
+        return MediaCorpus
+
+    def index_queryset(self, using=None):
+        """Used when the entire index for model is updated."""
+        return self.get_model().objects.all()
+
+
+class MediaFondsIndex(indexes.SearchIndex, indexes.Indexable):
+    
+    text = indexes.CharField(document=True, use_template=True)
+    # title = indexes.CharField(model_attr='title')
+    # recorded_from_date = indexes.DateField(model_attr='recorded_from_date')
+
+    def get_model(self):
+        return MediaFonds
+
+    def index_queryset(self, using=None):
+        """Used when the entire index for model is updated."""
+        return self.get_model().objects.all()
+

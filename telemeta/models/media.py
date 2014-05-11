@@ -323,6 +323,10 @@ class MediaCollection(MediaResource):
 
     computed_duration.verbose_name = _('computed duration')
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ("telemeta-collection-detail", [self.public_id,])
+
     def save(self, force_insert=False, force_update=False, user=None, code=None):
         super(MediaCollection, self).save(force_insert, force_update)
 
@@ -509,6 +513,10 @@ class MediaItem(MediaResource):
         return instruments
 
         instruments.verbose_name = _("instruments")
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ("telemeta-item-detail", [self.public_id,])
 
 
 class MediaItemRelated(MediaRelated):
@@ -799,6 +807,10 @@ class MediaCorpus(MediaBaseResource):
         verbose_name = _('corpus')
         verbose_name_plural = _('corpus')
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ("telemeta-corpus-detail", [self.public_id,])
+
 
 class MediaFonds(MediaBaseResource):
     "Describe fonds"
@@ -821,6 +833,10 @@ class MediaFonds(MediaBaseResource):
             if child.has_mediafile:
                 return True
         return False
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ("telemeta-fonds-detail", [self.public_id,])
 
     class Meta(MetaCore):
         db_table = 'media_fonds'
