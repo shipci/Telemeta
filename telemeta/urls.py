@@ -122,7 +122,8 @@ urlpatterns = patterns('',
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/keywords/$', item_view.item_keywords_edit,
         dict(template='telemeta/mediaitem_keywords_edit.html'), name="telemeta-item-keywords_edit"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/delete/$', item_view.item_delete, name="telemeta-item-delete"),
-    url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)$', item_view.related_media_item_stream, name="telemeta-item-related"),
+    url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/view/$', item_view.related_media_item_stream, name="telemeta-item-related"),
+    url(r'^archives/items/(?P<item_public_id>[A-Za-z0-9._-]+)/related/(?P<media_id>[A-Za-z0-9._-]+)/download/$', item_view.related_media_item_download, name="telemeta-item-related-download"),
     url(r'^archives/items/(?P<public_id>[A-Za-z0-9._-]+)/related_edit/$', item_view.related_media_edit,  dict(template='telemeta/mediaitem_related_edit.html'), name="telemeta-item-related_edit"),
     # Markers
     url(r'^archives/markers/(?P<marker_id>[A-Za-z0-9]+)/$', item_view.item_detail, name="telemeta-item-detail-marker"),
@@ -330,6 +331,7 @@ urlpatterns = patterns('',
 
     # Profiles
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/$', profile_view.profile_detail, name="telemeta-profile-detail"),
+    url(r'^users/(?P<username>[A-Za-z0-9._-]+)/$', profile_view.profile_detail, name="telemeta-profile-detail-2"),
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/profile/edit/$', profile_view.profile_edit, name="telemeta-profile-edit"),
     url(r'^accounts/(?P<username>[A-Za-z0-9._-]+)/rss/$', UserRevisionsFeed(),  name="telemeta-user-rss"),
 
