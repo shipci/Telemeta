@@ -124,7 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'telemeta',
-    'timeside',
+    'timeside.player',
     'jsonrpc',
     'south',
     'sorl.thumbnail',
