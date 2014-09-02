@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-02 17:48+0200\n"
+"POT-Creation-Date: 2014-09-02 17:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -774,8 +774,8 @@ msgstr ""
 msgid "criteria"
 msgstr ""
 
-#: templates/admin/base.html:21 templates/telemeta/base.html:91
-#: templates/telemeta/base.html.py:95
+#: templates/admin/base.html:21 templates/telemeta/base.html:95
+#: templates/telemeta/base.html.py:99
 msgid "Home"
 msgstr ""
 
@@ -813,7 +813,7 @@ msgstr ""
 msgid "Write"
 msgstr ""
 
-#: templates/postman/base.html:15 templates/telemeta/base.html:98
+#: templates/postman/base.html:15 templates/telemeta/base.html:102
 msgid "Archives"
 msgstr ""
 
@@ -1017,12 +1017,12 @@ msgid "Administration"
 msgstr ""
 
 #: templates/telemeta/admin.html:14 templates/telemeta/admin_general.html:5
-#: templates/telemeta/base.html:116
+#: templates/telemeta/base.html:120
 msgid "General"
 msgstr ""
 
 #: templates/telemeta/admin_enumerations.html:6
-#: templates/telemeta/base.html:117 templates/telemeta/enumeration_edit.html:7
+#: templates/telemeta/base.html:121 templates/telemeta/enumeration_edit.html:7
 msgid "Enumerations"
 msgstr ""
 
@@ -1047,7 +1047,7 @@ msgid "No enumerations"
 msgstr ""
 
 #: templates/telemeta/admin_instruments.html:6
-#: templates/telemeta/admin_users.html:6 templates/telemeta/base.html:111
+#: templates/telemeta/admin_users.html:6 templates/telemeta/base.html:115
 #: templates/telemeta/users.html:5 templates/telemeta/users.html.py:8
 msgid "Users"
 msgstr ""
@@ -1057,71 +1057,71 @@ msgstr ""
 msgid "No users"
 msgstr ""
 
-#: templates/telemeta/base.html:54
+#: templates/telemeta/base.html:55
 msgid "Welcome"
 msgstr ""
 
-#: templates/telemeta/base.html:61 templates/telemeta/base.html.py:90
+#: templates/telemeta/base.html:62 templates/telemeta/base.html.py:94
 msgid "Profile"
 msgstr ""
 
-#: templates/telemeta/base.html:63 templates/telemeta/base.html.py:67
+#: templates/telemeta/base.html:64 templates/telemeta/base.html.py:71
 msgid "Help"
 msgstr ""
 
-#: templates/telemeta/base.html:64
+#: templates/telemeta/base.html:66
 msgid "Sign out"
 msgstr ""
 
-#: templates/telemeta/base.html:68 templates/telemeta/login.html:28
+#: templates/telemeta/base.html:72 templates/telemeta/login.html:28
 msgid "Sign in"
 msgstr ""
 
-#: templates/telemeta/base.html:76 templates/telemeta/search_criteria.html:151
+#: templates/telemeta/base.html:80 templates/telemeta/search_criteria.html:151
 msgid "Search"
 msgstr ""
 
-#: templates/telemeta/base.html:87
+#: templates/telemeta/base.html:91
 msgid "Desk"
 msgstr ""
 
-#: templates/telemeta/base.html:89 views/home.py:91
+#: templates/telemeta/base.html:93 views/home.py:91
 msgid "Lists"
 msgstr ""
 
-#: templates/telemeta/base.html:100 templates/telemeta/breadcrumbs.html:4
+#: templates/telemeta/base.html:104 templates/telemeta/breadcrumbs.html:4
 #: templates/telemeta/inc/breadcrumbs.html:5
 msgid "Fonds"
 msgstr ""
 
-#: templates/telemeta/base.html:101 templates/telemeta/breadcrumbs.html:5
+#: templates/telemeta/base.html:105 templates/telemeta/breadcrumbs.html:5
 #: templates/telemeta/inc/breadcrumbs.html:6
 msgid "Corpus"
 msgstr ""
 
-#: templates/telemeta/base.html:102 templates/telemeta/breadcrumbs.html:6
+#: templates/telemeta/base.html:106 templates/telemeta/breadcrumbs.html:6
 #: templates/telemeta/inc/breadcrumbs.html:7
 msgid "Collections"
 msgstr ""
 
-#: templates/telemeta/base.html:103 templates/telemeta/breadcrumbs.html:7
+#: templates/telemeta/base.html:107 templates/telemeta/breadcrumbs.html:7
 #: templates/telemeta/inc/breadcrumbs.html:8
 msgid "Items"
 msgstr ""
 
-#: templates/telemeta/base.html:107 templates/telemeta/home.html:25
+#: templates/telemeta/base.html:111 templates/telemeta/home.html:25
 msgid "Geo Navigator"
 msgstr ""
 
-#: templates/telemeta/base.html:109
+#: templates/telemeta/base.html:113
 msgid "Advanced search"
 msgstr ""
 
-#: templates/telemeta/base.html:114
+#: templates/telemeta/base.html:118
 msgid "Admin"
 msgstr ""
 
-#: templates/telemeta/base.html:118
+#: templates/telemeta/base.html:122
 #: templates/telemeta/instrument_alias_edit_value.html:24
 #: templates/telemeta/instrument_edit.html:4
 #: templates/telemeta/instrument_edit.html:7
@@ -1129,27 +1129,27 @@ msgstr ""
 msgid "Instruments"
 msgstr ""
 
-#: templates/telemeta/base.html:119
+#: templates/telemeta/base.html:123
 #: templates/telemeta/instrument_alias_edit.html:4
 #: templates/telemeta/instrument_alias_edit.html:7
 msgid "Instrument aliases"
 msgstr ""
 
-#: templates/telemeta/base.html:155
+#: templates/telemeta/base.html:159
 msgid "Powered by"
 msgstr ""
 
-#: templates/telemeta/base.html:156
+#: templates/telemeta/base.html:160
 msgid "By"
 msgstr ""
 
-#: templates/telemeta/base.html:161
+#: templates/telemeta/base.html:165
 msgid ""
 "Usage of the archives in the respect of cultural heritage of the original "
 "communities."
 msgstr ""
 
-#: templates/telemeta/base.html:167
+#: templates/telemeta/base.html:171
 #: templates/telemeta/collection_detail.html:125
 msgid "Legal notices"
 msgstr ""
