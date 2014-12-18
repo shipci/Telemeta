@@ -191,9 +191,6 @@ EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
-<<<<<<< HEAD
-TIMESIDE_AUTO_ZOOM = False
-=======
 TIMESIDE_DEFAULT_WAVEFORM_SIZES = ['360x130', '640x130']
 TIMESIDE_AUTO_ZOOM = False
 
@@ -255,4 +252,3 @@ SUIT_CONFIG = {
 #         },
 #     },
 # }
->>>>>>> dev
