@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 # Django settings for sandbox project.
 
-import os
+import os, sys
 from django.core.urlresolvers import reverse_lazy, reverse
+
+sys.dont_write_bytecode = True
+
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+ALLOWED_HOSTS = ['*']
 
 ADMINS = (
     ('Guillaume Pellerin', 'yomguy@parisson.com'),
@@ -36,8 +42,11 @@ TIME_ZONE = 'Europe/Paris'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 #LANGUAGE_CODE = 'fr_FR'
+
 LANGUAGES = [ ('fr', 'French'),
               ('en', 'English'),
+              ('de', 'German'),
+              ('zh', 'Chinese'),
 ]
 
 SITE_ID = 1
@@ -52,10 +61,10 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 if not os.path.exists(MEDIA_ROOT):
-	os.mkdir(MEDIA_ROOT)
+    os.mkdir(MEDIA_ROOT)
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -66,7 +75,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/var/www/static/'
+STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -104,9 +113,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    # 'pagination.middleware.PaginationMiddleware',
 )
 
-ROOT_URLCONF = 'sandbox.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -120,6 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'suit',
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'django_extensions',
@@ -130,6 +141,11 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'timezones',
     'jqchat',
+    'ipauth',
+    'extra_views',
+    'debug_toolbar',
+    'bootstrap3',
+    'bootstrap_pagination',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -138,21 +154,32 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
 )
+
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'ipauth.backend.RangeBackend',
+)
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 TELEMETA_ORGANIZATION = 'Parisson'
 TELEMETA_SUBJECTS = ('test', 'telemeta', 'sandbox')
 TELEMETA_DESCRIPTION = "Telemeta TEST sandbox"
+TELEMETA_LOGO = STATIC_URL + 'telemeta/images/logo_telemeta_2.png'
+
 TELEMETA_GMAP_KEY = 'ABQIAAAArg7eSfnfTkBRma8glnGrlxRVbMrhnNNvToCbZQtWdaMbZTA_3RRGObu5PDoiBImgalVnnLU2yN4RMA'
-TELEMETA_CACHE_DIR = MEDIA_ROOT + 'cache/'
-TELEMETA_EXPORT_CACHE_DIR = MEDIA_ROOT + 'export/'
-TELEMETA_DATA_CACHE_DIR = TELEMETA_CACHE_DIR + "data/"
+
+TELEMETA_CACHE_DIR = os.path.join(MEDIA_ROOT, 'cache')
+TELEMETA_EXPORT_CACHE_DIR = os.path.join(MEDIA_ROOT, 'export')
+TELEMETA_DATA_CACHE_DIR = os.path.join(TELEMETA_CACHE_DIR, 'data')
 
 TELEMETA_DOWNLOAD_ENABLED = True
 TELEMETA_STREAMING_FORMATS = ('mp3', 'ogg')
 TELEMETA_DOWNLOAD_FORMATS = ('wav', 'mp3', 'ogg', 'flac')
 TELEMETA_PUBLIC_ACCESS_PERIOD = 51
-TELEMETA_DEFAULT_WAVEFORM_SIZES = ['360x130', '640x130']
 
 AUTH_PROFILE_MODULE = 'telemeta.userprofile'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
@@ -164,4 +191,68 @@ EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@parisson.com'
 
 TIMESIDE_DEFAULT_GRAPHER_ID = 'waveform_centroid'
+<<<<<<< HEAD
 TIMESIDE_AUTO_ZOOM = False
+=======
+TIMESIDE_DEFAULT_WAVEFORM_SIZES = ['360x130', '640x130']
+TIMESIDE_AUTO_ZOOM = False
+
+# Settings for django-bootstrap3
+BOOTSTRAP3 = {
+    'set_required': True,
+    'set_placeholder': False,
+    'error_css_class': 'has-error',
+    'required_css_class': 'has-warning',
+    'javascript_in_head': True,
+}
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+}
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'Telemeta Admin'
+}
+
+
+# LOG_DIR = os.path.join(BASE_DIR, 'log')
+
+# if not os.path.exists(LOG_DIR):
+#     os.mkdir(LOG_DIR)
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(LOG_DIR, 'debug.log')
+#         },
+#     },
+#     'loggers': {
+#         'django.request': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
+>>>>>>> dev

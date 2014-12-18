@@ -1,68 +1,28 @@
------------------
-Requirements
------------------
+--------
+Install
+--------
 
-Don't worry, Telemeta is easy to setup as any other Django app but requires some extra apps and modules to run. It is designed to run on Linux and other UNIX based architectures.
+Telemeta is designed first to run on Linux platforms.
 
-Install the system dependencies
---------------------------------
+* On Debian and Ubuntu operating systems, please install all binary dependencies like this::
 
-* On Debian (Squeeze recommended) or Ubuntu Lucid:
+    sudo aptitude install gcc python python-dev python-pip python-django python-xml \
+        python-ctypes python-setuptools python-support python-docutils \
+        python-libxml2 python-django-registration python-lxml python-numpy \
+        python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
+        python-django-south
 
-    Install all dependencies like this::
-
-        sudo aptitude install gcc python python-dev python-django python-xml \
-            python-ctypes python-setuptools python-support python-docutils \
-            python-libxml2 python-django-registration python-lxml python-numpy \
-            python-scipy python-imaging python-mutagen python-gobject python-gst0.10 \
-            gstreamer0.10-plugins-base gobject-introspection python-django-south
-            python-pip gir1.2-gstreamer-0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-bad
-
-    To get non-free (MP3, MP4, AAC, etc) decoding and encoding features, add Debian Multimedia repository and install the modules::
-
-        echo "deb http://www.deb-multimedia.org stable main non-free" | sudo tee -a /etc/apt/sources.list
-        sudo apt-get update
-        sudo apt-get install gstreamer0.10-lame gstreamer0.10-plugins-really-bad gstreamer0.10-plugins-ugly
-
-* On other linux platforms:
-
-    Please install all the equivalent dependencies thanks to your application manager or manually.
-
-
-Install Telemeta
------------------------------
-
-Pip method (highly recommended!)
-+++++++++++++++++++++++++++++++++
-
-We strongly advise you use the python package tool as it installs some good dependencies automatically::
+ then do::
 
     sudo pip install telemeta
 
-or (deprecated)::
+* On other Linux platforms:
 
-    sudo easy_install telemeta
+    Please install all the equivalent dependencies above thanks to your application manager.
 
-From sources
-+++++++++++++
+* OSX install procedure will be soon provided.
 
-Download the latest tar archive at http://telemeta.org.
-
-Uncompress and install it like this::
-
-    tar xzf telemeta-1.0.tar.gz
-    cd telemeta-1.0
-    sudo python setup.py install
-
-For development
-++++++++++++++++
-
-Download the latest tar archive at http://telemeta.org and::
-
-    tar xzf telemeta-1.0.tar.gz
-    cd telemeta-1.0
-    sudo pip install -e .
-    export PYTHONPATH=$PYTHONPATH:`pwd`
+* Windows plaforms are not officialy supported but possible.
 
 -------------------------
 Fast testing (sandbox)
@@ -86,21 +46,20 @@ Start your project
 
 For example::
 
-    cd ~/my_projects
-    django-admin startproject mysite
+    cd ~/projects
+    django-admin startproject newproject
 
 Create the database
 ------------------------
 
-Telemeta needs MySQL to work well and fast. So you need to create a MySQL database before trying it.
-But you can also use SQLite, PostgreSQL or Oracle DB.
+Telemeta needs MySQL to work well and fast in production. So you need to create a MySQL database before trying it. But you can also use SQLite, PostgreSQL or Oracle DB.
 
-Configure the telemeta project
+Configure the project
 ----------------------------------
 
-Edit the file settings.py in a text editor. You can find (even copy) an example there::
+Edit the file newproject/settings.py in a text editor.
 
-    example/sandbox/settings.py
+You can find and even copy the example in the sandbox (example/sandbox/settings.py)
 
 Modifiy the following variables::
 
