@@ -26,7 +26,3 @@ before_script:
 - pip install -U pytest-cov pytest-django
 script:
  - python setup.py test -a "--cov telemeta"
-
-after_success:
- - pip install coveralls
- - coveralls
